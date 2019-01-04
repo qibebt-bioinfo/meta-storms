@@ -57,9 +57,9 @@ The example dataset could be found at “example” folder. Check the “example
 
 If the automatic installer fails, Meta-Storms 2 can still be installed manually.
 
-a. Extract the package:
+a. : Download the package:
 ```
-tar –xzvf meta-storms-2-std-src.tar.gz
+git clone https://github.com/qibebt-bioinfo/Meta-Storms.git	
 ```
 
 b. Configure the environment variables (the default environment variable configuration file is “~/.bashrc”):
@@ -70,7 +70,7 @@ source ~/.bashrc
 ```
 c. Compile the source code (this is required only when installing the source code package):
 ```
-cd meta-storms-2-std
+cd Meta-Storms
 make
 ```
 
