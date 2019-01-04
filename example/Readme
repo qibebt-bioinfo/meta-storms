@@ -1,0 +1,30 @@
+#Here we provide a demo dataset with 20 human oral microbiome samples
+#in 2 different healthy status produced by Huang, et al., 2014. 
+#
+#File description
+#taxa.OTU.Count: OTU table that profiled by Parallel-META 3 (version 3.4.4).
+#meta.txt: Meta-data, "B" for healthy baseline, "I" for natural gingivitis. 
+#
+#To run the demo, you can either 
+#
+#sh Readme
+#
+#or
+#type the following 3 commands. 
+#
+#Commands:
+#Make database
+MetaDB-make -T taxa.OTU.Count -o database
+#
+#Search database
+MetaDB-search -T taxa.OTU.Count -d database.mdb -o query.out
+#
+#Predict healthy status
+MetaDB-parse-meta -i query.out -m meta.txt -o query.out.meta
+#
+#Output description
+#database.mdb: The built database by the input OTU table.
+#query.out: The top 10 hits of input query samples.
+#query.out.meta: The predicted healthy status of the query samples.
+#
+#This demo run should take less than 1 minute on a recommended computer.
