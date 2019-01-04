@@ -38,14 +38,14 @@ brew install gcc --without-multilib
 
 At present, Meta-Storms 2 provides a fully automatic installer for easy installation.
 
-a. Extract the package:
+a. : Download the package:
 ```
-tar -xzvf meta-storms-2-std-bin.tar.gz	
+git clone https://github.com/qibebt-bioinfo/Meta-Storms.git	
 ```
 
 b. Install by installer:
 ```
-cd meta-storms-2-std
+cd Meta-Storms
 source install.sh
 ```
 
