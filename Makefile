@@ -1,4 +1,7 @@
-CC=g++
+CC:=g++
+ifneq (,$(findstring Darwin,$(shell uname)))
+      CC:=g++-8
+endif
 HASHLIB=-Wno-deprecated
 BUILDFLG=-w -ffunction-sections -fdata-sections -fmodulo-sched -msse
 OMP=-fopenmp
