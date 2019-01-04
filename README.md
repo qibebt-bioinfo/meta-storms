@@ -38,7 +38,7 @@ brew install gcc --without-multilib
 
 At present, Meta-Storms 2 provides a fully automatic installer for easy installation.
 
-a. : Download the package:
+a. Download the package:
 ```
 git clone https://github.com/qibebt-bioinfo/Meta-Storms.git	
 ```
@@ -57,7 +57,7 @@ The example dataset could be found at “example” folder. Check the “example
 
 If the automatic installer fails, Meta-Storms 2 can still be installed manually.
 
-a. : Download the package:
+a. Download the package:
 ```
 git clone https://github.com/qibebt-bioinfo/Meta-Storms.git	
 ```
@@ -68,7 +68,7 @@ export MetaStorms=Path to Meta-Storms 2
 export PATH=”$PATH:$MetaStorms/bin/”
 source ~/.bashrc
 ```
-c. Compile the source code (this is required only when installing the source code package):
+c. Compile the source code:
 ```
 cd Meta-Storms
 make
