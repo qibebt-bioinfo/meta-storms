@@ -40,7 +40,7 @@ At present, Meta-Storms 2 provides a fully automatic installer for easy installa
 
 a. Download the package:
 ```
-git clone https://github.com/qibebt-bioinfo/Meta-Storms.git	
+git clone https://github.com/qibebt-bioinfo/meta-storms.git	
 ```
 
 b. Install by installer:
@@ -59,7 +59,7 @@ If the automatic installer fails, Meta-Storms 2 can still be installed manually.
 
 a. Download the package:
 ```
-git clone https://github.com/qibebt-bioinfo/Meta-Storms.git	
+git clone https://github.com/qibebt-bioinfo/meta-storms.git	
 ```
 
 b. Configure the environment variables (the default environment variable configuration file is “~/.bashrc”):
