@@ -45,7 +45,7 @@ git clone https://github.com/qibebt-bioinfo/meta-storms.git
 
 b. Install by installer:
 ```
-cd Meta-Storms
+cd meta-storms
 source install.sh
 ```
 
@@ -70,7 +70,7 @@ source ~/.bashrc
 ```
 c. Compile the source code:
 ```
-cd Meta-Storms
+cd meta-storms
 make
 ```
 
