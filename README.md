@@ -29,7 +29,7 @@ Meta-Storms 2 only requires a standard computer with sufficient RAM to support t
 
 OpenMP library is the C/C++ parallel computing library. Most Linux releases have OpenMP already been installed in the system. In Mac OS X, to install the compiler that supports OpenMP, we recommend using the Homebrew package manager:
 ```
-brew install gcc --without-multilib
+brew install gcc
 ```
 
 # Installation guide
