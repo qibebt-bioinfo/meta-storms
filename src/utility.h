@@ -22,15 +22,15 @@
 using namespace std;
 
 string Check_Env(){
-    /*if (getenv("MetaStorms") == NULL){
+    if (getenv("MetaStorms") == NULL){
                                
                                cerr << "Error: Please set the environment variable \"MetaStorms\" to the directory" << endl;
                                exit(0);
                                
                                    }
     
-    //string path =  getenv("MetaStorms");*/
-    string path = "/mnt/8-ds60t/mse/MetaDB2/";
+    string path =  getenv("MetaStorms");
+    //string path = "/mnt/8-ds60t/mse/MetaDB2/";
     return path;
     }
 
