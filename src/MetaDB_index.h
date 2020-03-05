@@ -1,12 +1,12 @@
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
-// Updated at Nov 29, 2017
+// Updated at Dec 20, 2019
 // Updated by Xiaoquan Su
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include "db.h"
-
+#include "math.h"
 #ifndef METADB_INDEX_H
 #define METADB_INDEX_H
 
@@ -17,15 +17,15 @@ using namespace std;
 class _MetaDB_Index{
       
       public:               
-             _MetaDB_Index(){                                           
-                              Set_Index_Level(DEFAULT_INDEX_LEVEL);                                                                                                                
-                             }
+             _MetaDB_Index(){}
              
-             //For dev only
-             _MetaDB_Index(int level){
-                              Set_Index_Level(level);                                                                        
+             _MetaDB_Index(char db){
+                              _PMDB database(db);                              
+                              if (db == 'F') Database_path = database.Get_Func_Path();
+                              else  Database_path = database.Get_Path();
+                              Init();                                                                                                                                           
                              }
-                                                                 
+                                            
              int Get_IndexN();                                                 
              int Make_Index(float * abd_otu, float * abd_index);                        
              float Calc_Index(float * abd_1, float * abd_2, float t);   
@@ -34,7 +34,8 @@ class _MetaDB_Index{
              
       private:              
              map <string, int> Index_hash;
-             _PMDB Database;
+             
+             string Database_path;
              string Index_file;
              string Index_taxa_file;
              
@@ -44,7 +45,6 @@ class _MetaDB_Index{
              int IndexN;
              int OrderN;
              
-             void Set_Index_Level(int level);
              void Init();             
              int Load_Index_Table();
              int Load_Index_Order();
@@ -52,6 +52,9 @@ class _MetaDB_Index{
       };
 
 void _MetaDB_Index::Init(){                                    
+                  Index_file = Database_path + "/index/index.txt";
+                  Index_taxa_file = Database_path + "/index/index_order.txt"; 
+                  
                   IndexN = Load_Index_Table();
                   OrderN = Load_Index_Order();
                   }
@@ -70,7 +73,7 @@ int _MetaDB_Index::Load_Index_Table(){
                     
                     infile.close();
                     infile.clear();
-                    
+                                        
                     return Index_entry.size();
                     }
 
@@ -104,12 +107,23 @@ int _MetaDB_Index::Make_Index(float * abd_otu, float * abd_index){
     
     for (int i = 0; i < IndexN; i ++)
         abd_index[i] = 0;
+    
+    float index_sum = 0;
+    
     for (int i = 0; i < OrderN; i ++)
-        if (Order[i] >= 0)
+        if (Order[i] >= 0){
            abd_index[Order[i]] += abd_otu[i];
+           index_sum += abd_otu[i];
+           }
     
+    //norm
+    index_sum /= 100.0;
+    for (int i = 0; i < IndexN; i ++){
+        abd_index[i] /= index_sum;
+        }
+    
+    //count no zero
     int n_zero = 0;
-    
     for (int i = 0; i < IndexN; i ++)
         if (abd_index[i] > 0) n_zero ++;
         
@@ -164,47 +178,6 @@ float _MetaDB_Index::Calc_Index_Cos(float * abd_1, float * abd_2, float t){ // c
       
       return index / root_f;
       }
-
-void _MetaDB_Index::Set_Index_Level(int level){ //For dev only
-     
-     switch(level){
-               
-               case 0: Index_file = Database.Get_Path() + "/index/Index_phylum.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_taxa_phylum.txt"; 
-                       break;
-               case 1: Index_file = Database.Get_Path() + "/index/Index_class.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_taxa_class.txt"; 
-                       break;
-               case 2: Index_file = Database.Get_Path() + "/index/Index_order.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_taxa_order.txt"; 
-                       break;
-               case 3: Index_file = Database.Get_Path() + "/index/Index_family.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_taxa_family.txt"; 
-                       break;
-               case 4: Index_file = Database.Get_Path() + "/index/Index_genus.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_taxa_genus.txt";
-                       break;
-               case 5: Index_file = Database.Get_Path() + "/index/Index_C73.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_C73_order.txt";
-                       break;
-               case 6: Index_file = Database.Get_Path() + "/index/Index_C75.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_C75_order.txt";
-                       break;
-               case 7: Index_file = Database.Get_Path() + "/index/Index_73.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_73_order.txt";
-                       break;
-               case 8: Index_file = Database.Get_Path() + "/index/Index_76.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_76_order.txt";
-                       break;
-               case 9: Index_file = Database.Get_Path() + "/index/Index_79.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_79_order.txt";
-                       break;                             
-              default: Index_file = Database.Get_Path() + "/index/Index_family.txt";
-                       Index_taxa_file = Database.Get_Path() + "/index/Index_taxa_family.txt";
-                       break;
-               }
-     Init();
-     }
 
 string _MetaDB_Index::Get_Index_Entry(int n){
        

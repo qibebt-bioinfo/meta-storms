@@ -1,8 +1,9 @@
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
-// Created at June 9, 2018 
-// Updated at Dec 19, 2018
+// Created at Sept 20, 2018 
+// Updated at July 19, 2019
 // Updated by Xiaoquan Su
 // Version 3.4.2 or above with _OTU_Parser
+// For MetaPhlAn
 
 #ifndef otu_parser_h
 #define otu_parser_h
@@ -16,6 +17,7 @@
 
 #define BUFF 10000000
 #define STRLEN 1000
+#define TAXA_LEVEL 8 //K, P, C, O, F, G, S, OTU
 
 using namespace std;
 
@@ -28,17 +30,32 @@ class _OTU_Parser{
              _OTU_Parser(_PMDB db){
                               Database = db;
                               Database.Read_Taxonomy(OTU_taxa_table);
-                              Database.Load_Copy_Number(Cp_number);
+                              if (Database.Get_Is_Cp()) Database.Load_Copy_Number(Cp_number);
                               };
+             float Output_hash_to_table(const char * tablefilename, hash_map<string, float, std_string_hash> otu_count, bool is_cp);
+             float Update_class_taxa(const char * infilename, const char * outfilename);
+             float Load_file_to_hash(const char * classfilename, hash_map<string, float, std_string_hash> & otu_count);
              
-             int Output_hash_to_table(const char * tablefilename, hash_map<string, int, std_string_hash> otu_count, bool is_cp){
+             string Get_taxa_by_OTU(string otu);
+             string Get_taxa_by_OTU(string otu, int level);
+             void Get_taxa_by_OTU(string otu, string * taxa, int level);
+             
+             float Get_cp_by_OTU(string otu);                           
+                          
+      private:
+              _PMDB Database;
+              hash_map<string, string, std_string_hash> OTU_taxa_table;
+              hash_map <string, float, std_string_hash> Cp_number;
+      };
+
+float _OTU_Parser::Output_hash_to_table(const char * tablefilename, hash_map<string, float, std_string_hash> otu_count, bool is_cp){
                  
                  hash_map <string, float, std_string_hash> otu_abd;
                  
                  //calc_abd
                  float seq_count = 0;
                  float otu_count_sum = 0;
-                 for (hash_map<string, int, std_string_hash> :: iterator miter = otu_count.begin(); miter != otu_count.end(); miter ++){                     
+                 for (hash_map<string, float, std_string_hash> :: iterator miter = otu_count.begin(); miter != otu_count.end(); miter ++){                     
                                   float cp = 1;
                                   if ((is_cp) && (Cp_number.count(miter->first) != 0))
                                             cp = Cp_number[miter->first];
@@ -46,7 +63,7 @@ class _OTU_Parser{
                                   seq_count += miter->second;
                                   }
                  
-                  for (hash_map<string, int, std_string_hash> :: iterator miter = otu_count.begin(); miter != otu_count.end(); miter ++){
+                  for (hash_map<string, float, std_string_hash> :: iterator miter = otu_count.begin(); miter != otu_count.end(); miter ++){
                      
                      float cp = 1;
                      if ((is_cp) && (Cp_number.count(miter->first) != 0))
@@ -63,7 +80,7 @@ class _OTU_Parser{
                  
                  outfile << "#Database_OTU\tCount\tAbundance\tTaxonomy" << endl;
                  
-                 for (hash_map<string, int, std_string_hash> :: iterator miter = otu_count.begin(); miter != otu_count.end(); miter ++){
+                 for (hash_map<string, float, std_string_hash> :: iterator miter = otu_count.begin(); miter != otu_count.end(); miter ++){
                      
                      string taxa = "Unclassified; otu_" + miter->first;
                      if (OTU_taxa_table.count(miter->first) != 0) taxa = OTU_taxa_table[miter->first];
@@ -77,16 +94,16 @@ class _OTU_Parser{
                  return  seq_count;            
                  }
                                            
-             int Update_class_taxa(const char * infilename, const char * outfilename){
+float _OTU_Parser::Update_class_taxa(const char * infilename, const char * outfilename){
                  
-                 hash_map<string, int, std_string_hash> otu_count;
-                 int count = Load_file_to_hash(infilename, otu_count);
+                 hash_map<string, float, std_string_hash> otu_count;
+                 float count = Load_file_to_hash(infilename, otu_count);
                  Output_hash_to_table(outfilename, otu_count, true);
                  
                  return count;   
                  }   
             
-            int Load_file_to_hash(const char * classfilename, hash_map<string, int, std_string_hash> & otu_count){
+float _OTU_Parser::Load_file_to_hash(const char * classfilename, hash_map<string, float, std_string_hash> & otu_count){
                  
                     //fgets
                     FILE * fptr = fopen(classfilename, "r");
@@ -107,12 +124,12 @@ class _OTU_Parser{
                    delete [] str_buffer;
                    fclose(fptr);
                  
-                 int mode = 1; //default is simple mode
+                 int mode = 1; //default is new format
                  
                  string title = file_buffer[0];
-                 if (title[1] == 'S') mode = 0;
+                 //if (title[1] == 'S') mode = 0;
                  
-                 unsigned int count = 0;                              
+                 float count = 0;                              
                  
                  if (mode == 0){ //detail mode, old format                          
                    for(int i = 1; i < file_buffer.size(); i ++){
@@ -132,8 +149,8 @@ class _OTU_Parser{
                  else{//simple mode, new format 
                        for(int i = 1; i < file_buffer.size(); i ++){
                                        char str_id [STRLEN];
-                                       int id_count = 0;                                       
-                                       sscanf(file_buffer[i].c_str(), "%s%d", str_id, &id_count);									   
+                                       float id_count = 0;                                       
+                                       sscanf(file_buffer[i].c_str(), "%s%f", str_id, &id_count);									   
                                        string id = str_id;
                                        otu_count[id] = id_count;
                                        count += id_count;
@@ -141,12 +158,141 @@ class _OTU_Parser{
                       } 
                  return count;
                  }
-                
-      private:
+                                         
+string _OTU_Parser::Get_taxa_by_OTU(string otu){
+                    
+                    if (OTU_taxa_table.count(otu) != 0)
+                       return OTU_taxa_table[otu];
+                    return "Unclassified";
+                    }
+            
+string _OTU_Parser::Get_taxa_by_OTU(string otu, int level){
+                   
+                   string taxon = "Unclassified";
+                   
+                   if ((level > TAXA_LEVEL) || (level < 0)) return taxon;
+                   
+                   if (OTU_taxa_table.count(otu) == 0)
+                      return taxon;
+                      
+                   string otu_taxa = OTU_taxa_table[otu];
+                   vector <string> taxa_buffer;
+                   stringstream strin(otu_taxa);
+                   
+                   string temp;
+    
+                   if (level == 8){ //otu
+                             taxon = "OTU_";
+                             taxon += otu;
+                   }
+    
+                   else for (int i = 0; i < level; i++){
+                            strin >> taxon;
+        
+                            if (taxon.find("Unclassified") != string::npos)
+                               return "Unclassified";
+                            
+                            if (taxon.find("otu_") != string::npos)
+                               return "Unclassified";
+                            
+        
+                            /*
+                            if(taxon[taxon.size()-1] != ';'){
+                                                   strin >> temp;
+                                                   taxon += "_";
+                                                   taxon += temp;
+                            }
+                            */
+                            
+                            taxa_buffer.push_back(taxon);
+        
+                            /*
+                            //add genus info for species
+                            if (i == 6){
+                               taxon = taxa_buffer[5];
+                               taxon = taxon.substr(0, taxon.size()-1);
+                               taxon += "_";
+                               taxon += taxa_buffer[6];
+                            }
+        
+                            //add prefix for genus
+                            if (i == 5){
+                               string taxa_prefix = taxa_buffer[i-1];
+                               taxa_prefix = taxa_prefix.substr(0, taxa_prefix.size() - 1);
+                               if (taxa_prefix.size() > 3) taxa_prefix = taxa_prefix.substr(0, 3);
+                               taxon = taxa_prefix + "_" + taxon;
+                               }
+                            */
+                               }
+    
+                   return taxon;
+                   }
+             
+void _OTU_Parser::Get_taxa_by_OTU(string otu, string * taxa, int level){
+                 
+                 if ((level > TAXA_LEVEL)) level = TAXA_LEVEL;
+                 
+                 string otu_taxa = "Unclassified";
+                 if (OTU_taxa_table.count(otu) != 0)
+                      otu_taxa = OTU_taxa_table[otu];
+    
+                 vector <string> taxa_buffer;
+                 stringstream strin(otu_taxa);
+                 string taxon;
+                 string temp;
+                 bool is_taxa = true;
 
-              _PMDB Database;
-              hash_map<string, string, std_string_hash> OTU_taxa_table;
-              hash_map <string, float, std_string_hash> Cp_number;
-      };
-
+                 for (int i = 0; i < level; i++){        
+        
+                     if (!(strin >> taxon)){
+                     taxon =  "Unclassified";
+                     is_taxa = false;
+                     }
+        
+               else if (taxon.find("Unclassified") != string::npos){
+                    taxon =  "Unclassified";
+                    is_taxa = false;
+                    }
+              else if (taxon.find("otu_") != string::npos){
+                   taxon = "Unclassified";
+                   is_taxa = false;
+                   }
+              
+              /*
+              else if(taxon[taxon.size()-1] != ';'){
+                   strin >> temp;
+                   taxon += "_";
+                   taxon += temp;
+              }
+              */
+              taxa_buffer.push_back(taxon);
+        
+              /*
+              //add genus info for species
+              if ((i == 6) && (is_taxa)) {
+                 taxon = taxa_buffer[5];
+                 taxon = taxon.substr(0, taxon.size()-1);
+                 taxon += "_";
+                 taxon += taxa_buffer[6];
+                 }
+        
+              //add prefix for genus
+              if ((i == 5) && (is_taxa)) {
+                   string taxa_prefix = taxa_buffer[i-1];
+                   taxa_prefix = taxa_prefix.substr(0, taxa_prefix.size() - 1);
+                   if (taxa_prefix.size() > 3) taxa_prefix = taxa_prefix.substr(0, 3);
+                   taxon = taxa_prefix + "_" + taxon;
+                   }
+              */
+               taxa[i] = taxon;
+               }
+            return;   
+            }
+                    
+float _OTU_Parser::Get_cp_by_OTU(string otu){
+                    
+                    if (Cp_number.count(otu) != 0)
+                       return Cp_number[otu];
+                    return 1;
+                    } 
 #endif

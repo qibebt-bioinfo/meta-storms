@@ -18,7 +18,6 @@ string DB_filename; //for dev
 void printhelp(){
     
     cout << "Meta-Storms 2 version " << Version << endl;
-    cout << "Compatible with Parallel-META 3" << endl;
     cout << "Usage : MetaDB-merge [Options] Value" << endl;
     
     cout << "\t[Input and Output options]" << endl;

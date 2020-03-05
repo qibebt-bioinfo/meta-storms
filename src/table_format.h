@@ -1,4 +1,4 @@
-// Updated at Jan 3, 2018
+// Updated at Aug 12, 2019
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 //version 3.1 or above with _Table_Format
 // Updated by Xiaoquan Su
@@ -57,9 +57,10 @@ class _Table_Format{
     float Get_Abd_By_Feature(unsigned int s, string a_feature);
     vector <float> Get_Abd(unsigned int s);
     
-    /*
     float Calc_Dist_Cos(int sam_m, int sam_n); //Calculate the Cosin distance between two samples
     float Calc_Dist_E(int sam_m, int sam_n); //Calculate the Euclidean distance between two samples
+    float Calc_Dist_JSD(int sam_m, int sam_n); //Calculate the Jeason-Shannon distance between two samples
+    float Calc_Dist_Bray_Curtis(int sam_m, int sam_n); //Calculate the Bray-Curtis distance between two samples
     
     float Calc_Corr_S(int sam_m, int sam_n);//Calculate Spearman correlation coefficient
     float Calc_Corr_P(int sam_m, int sam_n);//Calculate Pearson correlation coefficient
@@ -67,9 +68,8 @@ class _Table_Format{
     float Calc_Corr_S(vector <float> sam_m, vector <float> sam_n);
     float Calc_Corr_P(vector <float> sam_m, vector <float> sam_n);
     
-    void Calc_Dist_Matrix(const char * outfilename, int metrics, int coren, bool is_sim); //0: cost 1: eu dist
+    void Calc_Dist_Matrix(const char * outfilename, int metrics, int coren, bool is_sim); //0: cost 1: eu dist 2: jsd
     void Calc_Corr_Matrix(const char * outfilename, int metrics, int coren); //0: s-corr 1: p-corr
-    */
     
     protected:
     vector <string> Samples;
@@ -87,7 +87,7 @@ class _Table_Format{
     void Init_Filter(); //init features
     bool Check_Filter(string a_feature);//check features to determine whether to filter
     void Build_Feature_Hash();// Build the hash numbers of features.
-    //void BubbleSort(float *array1, int *rank1, int len);//Bubble sort code, was used by the function named 'Calc_Corr_S'
+    void BubbleSort(float *array1, int *rank1, int len);//Bubble sort code, was used by the function named 'Calc_Corr_S'
 
 };
 
@@ -394,7 +394,7 @@ void _Table_Format::Filter_Empty(){
              Empty_filtered[i] = is_empty;
             }                                                                                                                                                                              
       }
-/*
+
 float _Table_Format::Calc_Dist_E(int sam_m, int sam_n){
 
      float abd_m_norm[Features.size()], abd_n_norm[Features.size()];
@@ -410,10 +410,13 @@ float _Table_Format::Calc_Dist_E(int sam_m, int sam_n){
          sum_m += abd_m_norm[i];
          sum_n += abd_n_norm[i];
          }
-    
+     
+     if (sum_m <= 0) return 1;
+     if (sum_n <= 0) return 1;
+     
      for (int i = 0; i < Features.size(); i++){
-         abd_m_norm[i] /= sum_m;
-         abd_n_norm[i] /= sum_n;
+         if (sum_m > 0) abd_m_norm[i] /= sum_m;
+         if (sum_n > 0) abd_n_norm[i] /= sum_n;
          }
 
      
@@ -421,7 +424,6 @@ float _Table_Format::Calc_Dist_E(int sam_m, int sam_n){
          f += pow(abd_m_norm[i] - abd_n_norm[i], 2);
 
      return sqrt(f);
-
      }
 
 float _Table_Format::Calc_Dist_Cos(int sam_m, int sam_n){
@@ -447,6 +449,97 @@ float _Table_Format::Calc_Dist_Cos(int sam_m, int sam_n){
      f = f / ff;
      
      return (1 - f);
+     }
+
+float _Table_Format::Calc_Dist_JSD(int sam_m, int sam_n){
+
+      float abd_m_norm[Features.size()];
+      float abd_n_norm[Features.size()];
+      
+      float sum_m = 0;
+      float sum_n = 0;
+      
+      //Norm
+      for (int i = 0; i < Features.size(); i++){
+         if (Abd[sam_m][i] > 0) abd_m_norm[i] = Abd[sam_m][i];
+         else abd_m_norm[i] = 0;
+         
+         if (Abd[sam_n][i] > 0) abd_n_norm[i] = Abd[sam_n][i];
+         else abd_n_norm[i] = 0;
+ 
+         sum_m += abd_m_norm[i];
+         sum_n += abd_n_norm[i];
+         }
+     
+     if (sum_m <= 0) return 1;
+     if (sum_n <= 0) return 1;
+     
+     for (int i = 0; i < Features.size(); i++){
+         if (sum_m > 0) abd_m_norm[i] /= sum_m;
+         if (sum_n > 0) abd_n_norm[i] /= sum_n;
+         }
+      
+      //calc
+      float dkl_m = 0;
+      float dkl_n = 0;
+      
+      for (int i = 0; i < Features.size(); i ++){
+          
+          if ((abd_m_norm[i] == 0) && (abd_n_norm[i] == 0)) continue;
+          
+          float abd_q = (abd_m_norm[i] +  abd_n_norm[i]) / 2;
+          
+          if (abd_m_norm[i] > 0)
+             dkl_m += abd_m_norm[i] * log(abd_m_norm[i] / abd_q);
+          
+          if (abd_n_norm[i] > 0)
+             dkl_n += abd_n_norm[i] * log(abd_n_norm[i] / abd_q);
+
+          }
+          
+      return (dkl_m + dkl_n)/2.0;
+     }
+
+float _Table_Format::Calc_Dist_Bray_Curtis(int sam_m, int sam_n){
+
+      float abd_m_norm[Features.size()];
+      float abd_n_norm[Features.size()];
+      
+      float sum_m = 0;
+      float sum_n = 0;
+      
+      //Norm
+      for (int i = 0; i < Features.size(); i++){
+         if (Abd[sam_m][i] > 0) abd_m_norm[i] = Abd[sam_m][i];
+         else abd_m_norm[i] = 0;
+         
+         if (Abd[sam_n][i] > 0) abd_n_norm[i] = Abd[sam_n][i];
+         else abd_n_norm[i] = 0;
+ 
+         sum_m += abd_m_norm[i];
+         sum_n += abd_n_norm[i];
+         }
+     
+     if (sum_m <= 0) return 1;
+     if (sum_n <= 0) return 1;
+     
+     for (int i = 0; i < Features.size(); i++){
+         if (sum_m > 0) abd_m_norm[i] /= sum_m;
+         if (sum_n > 0) abd_n_norm[i] /= sum_n;
+         }
+      
+      //calc
+      float sum = 0;
+      float diff = 0;
+            
+      for (int i = 0; i < Features.size(); i ++){
+          sum += (abd_m_norm[i] + abd_n_norm[i]);
+          float a_diff = abd_m_norm[i] - abd_n_norm[i];
+          if (a_diff < 0) a_diff = a_diff * (-1.0);
+          diff += a_diff;
+          }
+      if (sum <= 0) return 1;
+      return diff / sum;
      }
 
 float _Table_Format::Calc_Corr_S(vector <float> sam_m, vector <float> sam_n){
@@ -577,6 +670,7 @@ float _Table_Format::Calc_Corr_S(int sam_m, int sam_n){
 
       }
 
+
 void _Table_Format::Calc_Dist_Matrix(const char * outfilename, int metrics, int coren, bool is_sim){
      
       //make order
@@ -610,10 +704,13 @@ void _Table_Format::Calc_Dist_Matrix(const char * outfilename, int metrics, int 
          long n = order_n[i];
          long p = m * (long) Samples.size() + n - (1 + m + 1) * (m + 1) / 2;    
         
-         if (metrics == 0)
-                    dist_matrix[p] = Calc_Dist_Cos(m, n);
-         else dist_matrix[p] = Calc_Dist_E(m, n);
-
+         switch (metrics){
+                case 0: dist_matrix[p] = Calc_Dist_Cos(m, n); break;
+                case 1: dist_matrix[p] = Calc_Dist_E(m, n); break;
+                case 2: dist_matrix[p] = Calc_Dist_JSD(m, n); break;
+                case 3: dist_matrix[p] = Calc_Dist_Bray_Curtis(m, n); break;
+                default: dist_matrix[p] = Calc_Dist_Cos(m, n); break;
+                }
         }
       
        for (int i = 0; i < Samples.size(); i++)
@@ -719,7 +816,7 @@ void _Table_Format::BubbleSort(float *array1, int *rank1, int len){
              }
          }
      }
-*/
+     
 float _Table_Format::Get_Abd_By_Feature(unsigned int s, string a_feature){
             
       if (s >= Samples.size())

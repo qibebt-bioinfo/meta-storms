@@ -71,7 +71,7 @@ int Gen_Index(const char * infilename, const char * outfilename, int mode){
             }
     
     
-    outfile << "#ID\tMeta-data\tScore" << endl;
+    outfile << "#ID\tMeta-data\tLikelihod_score" << endl;
     
     string buffer;
     unsigned int sample_count = 0;
@@ -181,7 +181,6 @@ int Gen_Index(const char * infilename, const char * outfilename, int mode){
     
 void PrintHelp(){
      cout << "Meta-Storms 2 version " << Version << endl;
-     cout << "Compatible with Parallel-META 3" << endl;
      cout << "Usage : MetaDB-parse-meta [Options] Value" << endl;
      cout << "\t[Input and Output options]" << endl;
      cout << "\t  -i Input file name (the output of MetaDB-search) [Required]"<<endl;

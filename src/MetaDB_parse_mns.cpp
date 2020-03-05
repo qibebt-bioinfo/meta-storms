@@ -120,7 +120,6 @@ int Gen_Index(const char * infilename, const char * outfilename){
     
 void PrintHelp(){
      cout << "Meta-Storms 2 version " << Version << endl;
-     cout << "Compatible with Parallel-META 3" << endl;
      cout << "Usage : MetaDB-parse-mns [Options] Value" << endl;
      cout << "\t[Input and Output options]" << endl;
      cout << "\t  -i Input file name (the output of MetaDB-search) [Required]"<<endl;

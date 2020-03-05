@@ -1,30 +1,28 @@
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // Updated at Dec 19, 2019
 // Updated by Xiaoquan Su
-// MetaDB_make
+// MetaDB_make_no_index
 
 #include "MetaDB.h"
-#ifndef METADB_MAKE_H
-#define METADB_MAKE_H
+#ifndef METADB_MAKE_NO_INDEX_H
+#define METADB_MAKE_NO_INDEX_H
 
-class _MetaDB_make: public _MetaDB{
+class _MetaDB_make_no_index : public _MetaDB{
       
       public:
-             _MetaDB_make(char db) : _MetaDB(db) {}
-
+             _MetaDB_make_no_index(char db) : _MetaDB(db) {};
               //Make database
-             int Make_Database(const char * databasefile, string listfile, string listprefix, bool is_cp);
-             int Make_Database(const char * databasefile, _Table_Format * tablefile, bool is_cp);              
-             int Make_Database_Hdd(const char * mdb); //only make HDD dat
-	  
-	  private:
-             int Make_Hdd_File(string id, float * abd, int n);         
+             int Make_Database(const char * databasefile, string listfile, string listprefix);
+             int Make_Database(const char * databasefile, _Table_Format * tablefile);
+             int Make_Database_Hdd(const char * mdbf); //only make HDD dat
+      private:
+	  		int Make_Hdd_File(string id, float * abd, int n); 
       };
 
 //Make database
-int _MetaDB_make::Make_Database(const char * databasefile, string listfile, string listprefix, bool is_cp){
-                            Is_cp_correct = is_cp;    
-                                                                           
+int _MetaDB_make_no_index::Make_Database(const char * databasefile, string listfile, string listprefix){
+                            Is_cp_correct = true;                         
+                            
                             ofstream outfile(databasefile, ios::out);
                             if (!outfile){
                                cerr << "Error: Cannot open database file: " << databasefile << endl;
@@ -51,12 +49,8 @@ int _MetaDB_make::Make_Database(const char * databasefile, string listfile, stri
                                 float * abd =  new float [MetaDB_Comper.Get_dim()];
                                 memset(abd, 0, MetaDB_Comper.Get_dim() * sizeof(float));
                                 MetaDB_Comper.Load_abd(files[i].c_str(), abd);
-                                
-                                //index
-                                float * index_abd = new float [MetaDB_Index.Get_IndexN()];
-                                memset(index_abd, 0, MetaDB_Index.Get_IndexN() * sizeof(float));
-                                MetaDB_Index.Make_Index(abd, index_abd);
-                                
+                                //no index
+                                                                                                                               
                                 //output
                                 //ID
                                 outfile << ids[i] << endl;
@@ -68,11 +62,8 @@ int _MetaDB_make::Make_Database(const char * databasefile, string listfile, stri
                                 outfile << endl;
                                 if (Mem_mode == 1)
                                 	Make_Hdd_File(ids[i], abd, MetaDB_Comper.Get_dim());
-                                //index
+                                //no index
                                 outfile << "Index:";
-                                for (int j = 0; j < MetaDB_Index.Get_IndexN(); j ++)
-                                    if (index_abd[j] > 0)
-                                       outfile << "\t" << j << "\t" << index_abd[j];
                                 outfile << endl;
                                 //Other
                                 outfile << ids[i] << endl;
@@ -80,7 +71,6 @@ int _MetaDB_make::Make_Database(const char * databasefile, string listfile, stri
                                 id_dup_check.insert(ids[i]);
                                 
                                 delete [] abd;
-                                delete [] index_abd;
                                 }
                                 
                             outfile.close();
@@ -89,9 +79,9 @@ int _MetaDB_make::Make_Database(const char * databasefile, string listfile, stri
                             }
 
 
-int _MetaDB_make::Make_Database(const char * databasefile, _Table_Format * tablefile, bool is_cp){                             
-                            Is_cp_correct = is_cp;     
-                                                   
+int _MetaDB_make_no_index::Make_Database(const char * databasefile, _Table_Format * tablefile){                             
+                            Is_cp_correct = true;                       
+                            
                             ofstream outfile(databasefile, ios::out);
                             if (!outfile){
                                cerr << "Error: Cannot open database file: " << databasefile << endl;
@@ -115,10 +105,7 @@ int _MetaDB_make::Make_Database(const char * databasefile, _Table_Format * table
                                 float * abd =  new float [MetaDB_Comper.Get_dim()];
                                 memset(abd, 0, MetaDB_Comper.Get_dim() * sizeof(float));
                                 MetaDB_Comper.Load_abd(tablefile, abd, i);
-                                //index
-                                float * index_abd = new float [MetaDB_Index.Get_IndexN()];
-                                memset(index_abd, 0, MetaDB_Index.Get_IndexN() * sizeof(float));
-                                MetaDB_Index.Make_Index(abd, index_abd);
+                                //no index
                                 
                                 //output
                                 //ID
@@ -131,11 +118,8 @@ int _MetaDB_make::Make_Database(const char * databasefile, _Table_Format * table
                                 outfile << endl;
                                 if (Mem_mode == 1)
                                 	Make_Hdd_File(ids[i], abd, MetaDB_Comper.Get_dim());
-                                //index
-                                outfile << "Index:";
-                                for (int j = 0; j < MetaDB_Index.Get_IndexN(); j ++)
-                                    if (index_abd[j] > 0)
-                                       outfile << "\t" << j << "\t" << index_abd[j];
+                                //no index
+                                outfile << "Index:";                                
                                 outfile << endl;
                                 //Other
                                 outfile << ids[i] << endl;
@@ -143,7 +127,6 @@ int _MetaDB_make::Make_Database(const char * databasefile, _Table_Format * table
                                 id_dup_check.insert(ids[i]);
                                 
                                 delete [] abd;
-                                delete [] index_abd;
                                 }   
                                 
                             outfile.close();
@@ -151,7 +134,8 @@ int _MetaDB_make::Make_Database(const char * databasefile, _Table_Format * table
                             return id_dup_check.size();
                             }    
 
-int _MetaDB_make::Make_Database_Hdd(const char * mdb){  
+
+int _MetaDB_make_no_index::Make_Database_Hdd(const char * mdb){  
 				
 				if (Mem_mode == 0) return 0; 
 
@@ -221,9 +205,8 @@ int _MetaDB_make::Make_Database_Hdd(const char * mdb){
                                        
                  return id_dup_check.size();
                  }  
-
 				                                                                               
-int _MetaDB_make::Make_Hdd_File(string id, float * abd, int n){
+int _MetaDB_make_no_index::Make_Hdd_File(string id, float * abd, int n){
 	
 	if (Mem_mode == 0) return 0;
 	

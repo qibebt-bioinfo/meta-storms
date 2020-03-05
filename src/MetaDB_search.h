@@ -1,5 +1,5 @@
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
-// Updated at June 9, 2018
+// Updated at Dec 19, 2019
 // Updated by Xiaoquan Su
 // MetaDB_search
 
@@ -7,127 +7,64 @@
 #include <omp.h>
 
 #include "MetaDB.h"
+#include "MetaDB_res.h"
+
 #ifndef METADB_SEARCH_H
 #define METADB_SEARCH_H
 
-class _MetaDB_Res{
-      public:
-             friend class _MetaDB_search;
-             _MetaDB_Res(){
-                       Sim_value = 0;
-                       Sample = NULL;
-                       Q_OTU_count = 0;
-                       }
-                       
-             _MetaDB_Res(_MetaDB_Entry * s, int q_otu_count, int res_otu_count, float v){
-                                   Sim_value = v;
-                                   Q_OTU_count = q_otu_count;
-                                   Sample = s;                                   
-                                   }
-             float Get_Res_Sim(){
-                    return Sim_value;
-                    }
-             string Get_Res_Sample_ID(){
-                    return Sample->Get_ID();
-                    }
-             
-             _MetaDB_Entry * Get_Sample(){
-                           return Sample;
-                           }
-             int Get_Query_OTU_Count(){
-                 return Q_OTU_count;
-                 }
-             int Get_Res_OTU_Count(){
-                 return Res_OTU_count;
-                 }
-    
-            static int Qsort(_MetaDB_Res * res, int begin, int end);
-    
-      private:
-              float Sim_value;
-              _MetaDB_Entry * Sample;
-              int Res_OTU_count;
-              int Q_OTU_count;
-             static int Qsort_partition(_MetaDB_Res * res, int begin, int end);
-      };
-
-int _MetaDB_Res::Qsort(_MetaDB_Res * res, int begin, int end){
-    
-    if (begin < end - 1){
-        int q = Qsort_partition(res, begin, end);
-        Qsort(res, begin, q);
-        Qsort(res, q + 1, end);
-        }
-    return 0;
-    }
-
-int _MetaDB_Res::Qsort_partition(_MetaDB_Res * res, int begin, int end){
-    
-    float x = res[end -1].Sim_value;
-    int i = begin - 1;
-    for (int j = begin; j < end - 1; j ++)
-        if (res[j].Sim_value >= x){
-            i ++;
-            _MetaDB_Res res_tmp = res[i];
-            res[i] = res[j];
-            res[j] = res_tmp;
-        }
-    
-    _MetaDB_Res res_tmp = res[i + 1];
-    res[i + 1] = res[end - 1];
-    res[end - 1] = res_tmp;
-    
-    return i + 1;
-    }
-
 class _MetaDB_search : public _MetaDB{
       public:
+             _MetaDB_search() : _MetaDB(){}
+             _MetaDB_search(char db) : _MetaDB(db){
+                                 MetaDB_Index = _MetaDB_Index(db);
+                                 MetaDB_Comper = _MetaDB_Comper(db);
+                                 }
              //Single sample
-             vector <_MetaDB_Res> Index_Search(const char * queryfile, int n, int f, float t, float min_s, bool is_weight, int coren);
-             vector <_MetaDB_Res> Search(const char * queryfile, int n, float min_s, bool is_weight, int coren);
+             vector <_MetaDB_Res> Index_Search(const char * queryfile, int n, int f, float t, float min_s, int mode, int coren);
+             vector <_MetaDB_Res> Search(const char * queryfile, int n, float min_s, int mode, int coren);
     
              //Sample list
-             vector <vector <_MetaDB_Res> > Index_Search(vector <string> queryfile, int n, int f, float t, float min_s, bool is_weight, int coren);
-             vector <vector <_MetaDB_Res> > Search(vector <string> queryfile, int n, float min_s, bool is_weight, int coren);
+             vector <vector <_MetaDB_Res> > Index_Search(vector <string> queryfile, int n, int f, float t, float min_s, int mode, int coren);
+             vector <vector <_MetaDB_Res> > Search(vector <string> queryfile, int n, float min_s, int mode, int coren);
     
              //Table format
-             vector <vector <_MetaDB_Res> > Index_Search(_Table_Format * tablefile, int n, int f, float t, float min_s, bool is_weight, int coren);
-             vector <vector <_MetaDB_Res> > Search(_Table_Format * tablefile, int n, float min_s, bool is_weight, int coren);  
+             vector <vector <_MetaDB_Res> > Index_Search(_Table_Format * tablefile, int n, int f, float t, float min_s, int mode, int coren);
+             vector <vector <_MetaDB_Res> > Search(_Table_Format * tablefile, int n, float min_s, int mode, int coren);  
              
              //Output the result in OTU table
              void Output_OTU_Table(const char * outfilename, const char * queryfile, string queryname, vector <_MetaDB_Res> res);                
-             //void Output_OTU_Table(const char * outfilename, const char * queryfile, string queryname, vector <_MetaDB_Res> res, const char * listname); 
+	         void Output_Species_Table(const char * outfilename, const char * queryfile, string queryname, vector <_MetaDB_Res> res);	              
              
              
       private:
               int Load_Abd_Hdd(string id, float * abd);                          
-              vector <_MetaDB_Res> Index_Search(float * q_abd, int n, int f, float t, float min_s, bool is_weight, int coren);                      
-              vector <_MetaDB_Res> Search(float * q_abd, int n, float min_s, bool is_weight, int coren);                        
+              vector <_MetaDB_Res> Index_Search(float * q_abd, int n, int f, float t, float min_s, int mode, int coren);                      
+              vector <_MetaDB_Res> Search(float * q_abd, int n, float min_s, int mode, int coren);                        
 
 };
 
 //Search releated methods
 //Single sample
-vector <_MetaDB_Res> _MetaDB_search::Index_Search(const char * queryfile, int n, int f, float t, float min_s, bool is_weight, int coren){ //top n, index =  f * n
+vector <_MetaDB_Res> _MetaDB_search::Index_Search(const char * queryfile, int n, int f, float t, float min_s, int mode, int coren){ //top n, index =  f * n
                     
-                    float * q_abd = new float [Comp_tree.Get_LeafN()];
-                    Comp_tree.Load_abd(queryfile, q_abd, Is_cp_correct);
-                    vector <_MetaDB_Res> res = Index_Search(q_abd, n, f, t, min_s, is_weight, coren);
+                    float * q_abd = new float [MetaDB_Comper.Get_dim()];
+                    MetaDB_Comper.Load_abd(queryfile, q_abd);
+                    vector <_MetaDB_Res> res = Index_Search(q_abd, n, f, t, min_s, mode, coren);
                     delete [] q_abd;
                     return res; 
                     } 
 
-vector <_MetaDB_Res> _MetaDB_search::Search(const char * queryfile, int n, float min_s, bool is_weight, int coren){// top n
+vector <_MetaDB_Res> _MetaDB_search::Search(const char * queryfile, int n, float min_s, int mode, int coren){// top n
                     
-                    float * q_abd = new float [Comp_tree.Get_LeafN()];
-                    Comp_tree.Load_abd(queryfile, q_abd, Is_cp_correct);
-                    vector <_MetaDB_Res> res = Search(q_abd, n, min_s,is_weight, coren);
+                    float * q_abd = new float [MetaDB_Comper.Get_dim()];
+                    MetaDB_Comper.Load_abd(queryfile, q_abd);
+                    vector <_MetaDB_Res> res = Search(q_abd, n, min_s,mode, coren);
                     delete [] q_abd;
                     return res;
                     }
 
 //Sample list
-vector <vector <_MetaDB_Res> > _MetaDB_search::Index_Search(vector <string> queryfile, int n, int f, float t, float min_s, bool is_weight, int coren){
+vector <vector <_MetaDB_Res> > _MetaDB_search::Index_Search(vector <string> queryfile, int n, int f, float t, float min_s, int mode, int coren){
     
     int sample_num = queryfile.size();
 
@@ -142,7 +79,7 @@ vector <vector <_MetaDB_Res> > _MetaDB_search::Index_Search(vector <string> quer
     
     #pragma omp parallel for schedule(dynamic, 1)
     for (int i = 0; i < sample_num; i ++){
-        res[i] = Index_Search(queryfile[i].c_str(), n, f, t, min_s, is_weight, single_sample_coren);
+        res[i] = Index_Search(queryfile[i].c_str(), n, f, t, min_s, mode, single_sample_coren);
         }
     
     for (int i = 0; i < sample_num; i ++)
@@ -152,7 +89,7 @@ vector <vector <_MetaDB_Res> > _MetaDB_search::Index_Search(vector <string> quer
     return res_return;
 }
 
-vector <vector <_MetaDB_Res> > _MetaDB_search::Search(vector <string> queryfile, int n, float min_s, bool is_weight, int coren){
+vector <vector <_MetaDB_Res> > _MetaDB_search::Search(vector <string> queryfile, int n, float min_s, int mode, int coren){
     
     int sample_num = queryfile.size();
     
@@ -167,7 +104,8 @@ vector <vector <_MetaDB_Res> > _MetaDB_search::Search(vector <string> queryfile,
     
     #pragma omp parallel for schedule(dynamic, 1)
     for (int i = 0; i < sample_num; i ++){
-        res[i] = Search(queryfile[i].c_str(), n, min_s, is_weight, single_sample_coren);
+        
+        res[i] = Search(queryfile[i].c_str(), n, min_s, mode, single_sample_coren);
         }
     
     for (int i = 0; i < sample_num; i ++)
@@ -178,7 +116,7 @@ vector <vector <_MetaDB_Res> > _MetaDB_search::Search(vector <string> queryfile,
     }
 
 //Table format
-vector <vector <_MetaDB_Res> > _MetaDB_search::Index_Search(_Table_Format * tablefile, int n, int f, float t, float min_s, bool is_weight, int coren){
+vector <vector <_MetaDB_Res> > _MetaDB_search::Index_Search(_Table_Format * tablefile, int n, int f, float t, float min_s, int mode, int coren){
     
     int sample_num = tablefile->Get_Sample_Size();
        
@@ -193,9 +131,9 @@ vector <vector <_MetaDB_Res> > _MetaDB_search::Index_Search(_Table_Format * tabl
     
     #pragma omp parallel for schedule(dynamic, 1)
     for (int i = 0; i < sample_num; i ++){
-           float * q_abd = new float [Comp_tree.Get_LeafN()];
-           Comp_tree.Load_abd(tablefile, q_abd, i, Is_cp_correct);
-           res[i] = Index_Search(q_abd, n, f, t, min_s, is_weight, single_sample_coren);
+           float * q_abd = new float [MetaDB_Comper.Get_dim()];
+           MetaDB_Comper.Load_abd(tablefile, q_abd, i);
+           res[i] = Index_Search(q_abd, n, f, t, min_s, mode, single_sample_coren);
            delete [] q_abd;
            }
     
@@ -206,7 +144,7 @@ vector <vector <_MetaDB_Res> > _MetaDB_search::Index_Search(_Table_Format * tabl
     return res_return;
     }
 
-vector <vector <_MetaDB_Res> > _MetaDB_search::Search(_Table_Format * tablefile, int n, float min_s, bool is_weight, int coren){
+vector <vector <_MetaDB_Res> > _MetaDB_search::Search(_Table_Format * tablefile, int n, float min_s, int mode, int coren){
     
     int sample_num = tablefile->Get_Sample_Size();
     
@@ -221,9 +159,9 @@ vector <vector <_MetaDB_Res> > _MetaDB_search::Search(_Table_Format * tablefile,
     
     #pragma omp parallel for schedule(dynamic, 1)
     for (int i = 0; i < sample_num; i ++){
-           float * q_abd = new float [Comp_tree.Get_LeafN()];
-           Comp_tree.Load_abd(tablefile, q_abd, i, Is_cp_correct);
-           res[i] = Search(q_abd, n, min_s, is_weight, single_sample_coren);
+           float * q_abd = new float [MetaDB_Comper.Get_dim()];
+           MetaDB_Comper.Load_abd(tablefile, q_abd, i);
+           res[i] = Search(q_abd, n, min_s, mode, single_sample_coren);
            delete [] q_abd;
            }
     
@@ -237,15 +175,15 @@ vector <vector <_MetaDB_Res> > _MetaDB_search::Search(_Table_Format * tablefile,
 void _MetaDB_search::Output_OTU_Table(const char * outfilename, const char * queryfile, string queryname, vector <_MetaDB_Res> res){
                     
                     vector <string> otus;
-                    for (int i = 0; i < Comp_tree.Get_LeafN(); i ++)
-                        otus.push_back("OTU_" + Comp_tree.Get_Id(i));
+                    for (int i = 0; i < MetaDB_Comper.Get_dim(); i ++)
+                        otus.push_back("OTU_" + MetaDB_Comper.Get_Id(i));
                     
                     _Table_Format table(otus);
                     
-                    float * q_abd = new float [Comp_tree.Get_LeafN()];
-                    Comp_tree.Load_abd(queryfile, q_abd, Is_cp_correct);
+                    float * q_abd = new float [MetaDB_Comper.Get_dim()];
+                    MetaDB_Comper.Load_abd(queryfile, q_abd);
                     
-                    vector <float> q_abd_vector(q_abd, q_abd + Comp_tree.Get_LeafN());
+                    vector <float> q_abd_vector(q_abd, q_abd + MetaDB_Comper.Get_dim());
                     
                     for (int i = 0; i < q_abd_vector.size(); i ++)
                         q_abd_vector[i] /= 100.0;
@@ -255,12 +193,12 @@ void _MetaDB_search::Output_OTU_Table(const char * outfilename, const char * que
                     for (int i = 0; i < res.size(); i ++){
                         vector <float> res_abd_vector;
                         if (Mem_mode == 0){ //RAM                        
-                           res_abd_vector = vector <float> ((res[i].Get_Sample())->Get_Abd(), (res[i].Get_Sample())->Get_Abd() + Comp_tree.Get_LeafN());
+                           res_abd_vector = vector <float> ((res[i].Get_Sample())->Get_Abd(), (res[i].Get_Sample())->Get_Abd() + MetaDB_Comper.Get_dim());
                            }
                         else{ //HDD 
-                              float * res_abd = new float [Comp_tree.Get_LeafN()];
+                              float * res_abd = new float [MetaDB_Comper.Get_dim()];
                               Load_Abd_Hdd((res[i].Get_Sample())->Get_ID(), res_abd);                   
-                              res_abd_vector = vector <float> (res_abd, res_abd + Comp_tree.Get_LeafN());
+                              res_abd_vector = vector <float> (res_abd, res_abd + MetaDB_Comper.Get_dim());
                              }
                               
                         for (int j = 0; j < res_abd_vector.size(); j ++)
@@ -273,69 +211,49 @@ void _MetaDB_search::Output_OTU_Table(const char * outfilename, const char * que
                     delete [] q_abd;
      
      }      
+void _MetaDB_search::Output_Species_Table(const char * outfilename, const char * queryfile, string queryname, vector <_MetaDB_Res> res){
 
-/*
-void _MetaDB_search::Output_OTU_Table(const char * outfilename, const char * queryfile, string queryname, vector <_MetaDB_Res> res, const char * listfilename){
-                    
-                    set <string> hash;                    
-                    //load pcoa list
-                    vector <int> pcoa_list;
-                    ifstream infile(listfilename, ios::in);
-                    if (!infile){
-                                 cerr << "Error: Cannot open pcoa list file" << endl;
-                                 return;
-                                 }
-                    
-                    int sam_id;
-                    while(infile >> sam_id)
-                                 pcoa_list.push_back(sam_id);
-                    
-                    infile.close();
-                    infile.clear();
-                    
                     vector <string> otus;
-                    for (int i = 0; i < Comp_tree.Get_LeafN(); i ++)
-                        otus.push_back("OTU_" + Comp_tree.Get_Id(i));
-                    
+                    for (int i = 0; i < MetaDB_Comper.Get_dim(); i ++)
+                        otus.push_back(MetaDB_Comper.Get_Id(i));
+
                     _Table_Format table(otus);
-                    
-                    //load query
-                    float * q_abd = new float [Comp_tree.Get_LeafN()];
-                    Comp_tree.Load_abd(queryfile, q_abd, Is_cp_correct);
-                    
-                    vector <float> q_abd_vector(q_abd, q_abd + Comp_tree.Get_LeafN());
-                    
-                    for (int i = 0; i < Comp_tree.Get_LeafN(); i ++)
+
+                    float * q_abd = new float [MetaDB_Comper.Get_dim()];
+                    MetaDB_Comper.Load_abd(queryfile, q_abd);
+
+                    vector <float> q_abd_vector(q_abd, q_abd + MetaDB_Comper.Get_dim());
+
+                    for (int i = 0; i < q_abd_vector.size(); i ++)
                         q_abd_vector[i] /= 100.0;
-                        
+
                     table.Add_Abd(q_abd_vector, queryname);
-                                                                                                                                       
-                    //load res
+
                     for (int i = 0; i < res.size(); i ++){
-                        vector <float> res_abd_vector((res[i].Get_Sample())->Get_Abd(), (res[i].Get_Sample())->Get_Abd() + Comp_tree.Get_LeafN());
-                        for (int j = 0; j < Comp_tree.Get_LeafN(); j ++)
+                        vector <float> res_abd_vector;
+                        if (Mem_mode == 0){ //RAM                        
+                           res_abd_vector = vector <float> ((res[i].Get_Sample())->Get_Abd(), (res[i].Get_Sample())->Get_Abd() + MetaDB_Comper.Get_dim());
+                           }
+                        else{ //HDD 
+                              float * res_abd = new float [MetaDB_Comper.Get_dim()];
+                              Load_Abd_Hdd((res[i].Get_Sample())->Get_ID(), res_abd);
+                              res_abd_vector = vector <float> (res_abd, res_abd + MetaDB_Comper.Get_dim());
+                             }
+
+                        for (int j = 0; j < res_abd_vector.size(); j ++)
                         res_abd_vector[j] /= 100.0;
                         table.Add_Abd(res_abd_vector, res[i].Get_Res_Sample_ID());
-                        hash.insert(res[i].Get_Res_Sample_ID());
                     }
-                    
-                    //load pcoa
-                    for (int i = 0; i < pcoa_list.size(); i ++){
-                        if (hash.count(Samples[pcoa_list[i]].Get_ID()) != 0) continue;
-                        vector <float> list_abd_vector(Samples[pcoa_list[i]].Get_Abd(), Samples[pcoa_list[i]].Get_Abd() + Comp_tree.Get_LeafN());
-                        for (int j = 0; j < Comp_tree.Get_LeafN(); j ++)
-                        list_abd_vector[j] /= 100.0;
-                        table.Add_Abd(list_abd_vector, Samples[pcoa_list[i]].Get_ID());                        
-                        }         
-                    
                     table.Filter_Empty();
-                    table.Output_Table(outfilename);     
-                    
+                    table.Output_Table(outfilename);
+
                     delete [] q_abd;
-                    }
-*/
+     
+}
+
 //private
-vector <_MetaDB_Res> _MetaDB_search::Index_Search(float * q_abd, int n, int f, float t, float min_s, bool is_weight, int coren){ //top n, index =  f * n
+vector <_MetaDB_Res> _MetaDB_search::Index_Search(float * q_abd, int n, int f, float t, float min_s, int mode, int coren){ //top n, index =  f * n                                        
+                    if (min_s < 0.01) min_s = 0.01; 
                     if (n <= 0) n = 1;                    
                     if (n > Samples.size()) n = Samples.size();
                     int cands_size = f * n;
@@ -343,7 +261,7 @@ vector <_MetaDB_Res> _MetaDB_search::Index_Search(float * q_abd, int n, int f, f
                     
                     //q_abd count
                     int q_abd_count = 0;
-                    for (int i = 0; i < Comp_tree.Get_LeafN(); i ++)
+                    for (int i = 0; i < MetaDB_Comper.Get_dim(); i ++)
                         q_abd_count += (q_abd[i] > 0) ? 1 : 0;
                     
                     
@@ -366,7 +284,7 @@ vector <_MetaDB_Res> _MetaDB_search::Index_Search(float * q_abd, int n, int f, f
                     qsort(index_res, cands, 0, Samples.size(), cands_size);
     
                     //Index calc end
-
+                                        
                     //Res calc
                     _MetaDB_Res * res = new _MetaDB_Res[cands_size];
                     
@@ -383,10 +301,10 @@ vector <_MetaDB_Res> _MetaDB_search::Index_Search(float * q_abd, int n, int f, f
                             res_abd_count = Samples[cands[i]].Get_OTU_Count();
                        		}
                         else { //HDD 
-                             sample_abd =  new float [Comp_tree.Get_LeafN()];
+                             sample_abd =  new float [MetaDB_Comper.Get_dim()];
                              res_abd_count = Load_Abd_Hdd(Samples[cands[i]].Get_ID(), sample_abd);
                              }
-                        sim = Comp_tree.Calc_sim(q_abd, sample_abd, is_weight);
+                        sim = MetaDB_Comper.Calc_sim(q_abd, sample_abd, mode);
                         sim = (sim > 1.0) ? 1.0 : sim;
                         res[i] = _MetaDB_Res(&(Samples[cands[i]]), q_abd_count, res_abd_count, sim);     
                         
@@ -409,13 +327,14 @@ vector <_MetaDB_Res> _MetaDB_search::Index_Search(float * q_abd, int n, int f, f
                     return res_return;
                     } 
 
-vector <_MetaDB_Res> _MetaDB_search::Search(float * q_abd, int n, float min_s, bool is_weight, int coren){// top n
+vector <_MetaDB_Res> _MetaDB_search::Search(float * q_abd, int n, float min_s, int mode, int coren){// top n
+                    if (min_s < 0.01) min_s = 0.01; 
                     if (n <= 0) n = 1;
                     if (n > Samples.size()) n = Samples.size();
                     
                     //q_abd count
                     int q_abd_count = 0;
-                    for (int i = 0; i < Comp_tree.Get_LeafN(); i ++)
+                    for (int i = 0; i < MetaDB_Comper.Get_dim(); i ++)
                         q_abd_count += (q_abd[i] > 0) ? 1 : 0;
                     
                     _MetaDB_Res * res = new _MetaDB_Res[Samples.size()];
@@ -423,7 +342,8 @@ vector <_MetaDB_Res> _MetaDB_search::Search(float * q_abd, int n, float min_s, b
                     omp_set_num_threads(coren);
                     
                     #pragma omp parallel for schedule(dynamic, 1)
-                    for (int i = 0; i < Samples.size(); i ++){
+                    for (int i = 0; i < Samples.size(); i ++){                                                
+                        
                         float sim = 0;
                         int res_abd_count = 0;
                         float * sample_abd = NULL;
@@ -434,34 +354,59 @@ vector <_MetaDB_Res> _MetaDB_search::Search(float * q_abd, int n, float min_s, b
                         	}
                            
                         else { //HDD 
-                             sample_abd =  new float [Comp_tree.Get_LeafN()];
+                             sample_abd =  new float [MetaDB_Comper.Get_dim()];
                              res_abd_count = Load_Abd_Hdd(Samples[i].Get_ID(), sample_abd);
                              }
-                        sim = Comp_tree.Calc_sim(q_abd, sample_abd, is_weight);
+                        sim = MetaDB_Comper.Calc_sim(q_abd, sample_abd, mode);
                         
                         sim = (sim > 1.0) ? 1.0 : sim;
                         res[i] = _MetaDB_Res(&(Samples[i]), q_abd_count, res_abd_count, sim);     
                         
                         if (Mem_mode == 1)//HDD
-                           delete [] sample_abd;                  
+                           delete [] sample_abd;      
+                         
                         }
                     
+                    //drop sim = 0 matches, debug, for too many zeros 
+                    float non_zero_cut = (min_s > 0.01) ? min_s : 0.01;
+                    int non_zero_count = 0;
+                    for (int i = 0; i < Samples.size(); i++)
+                        if (res[i].Sim_value >= non_zero_cut) non_zero_count ++;
+                    
+                    _MetaDB_Res * non_zero_res = new _MetaDB_Res[non_zero_count];
+                    
+                    int non_zero_iterator = 0;
+                    for (int i = 0; i < Samples.size(); i++)
+                        if (res[i].Sim_value >= non_zero_cut){                                             
+                                             non_zero_res[non_zero_iterator] = res[i];
+                                             non_zero_iterator ++;
+                                             }                    
+                    if (non_zero_count < n) n = non_zero_count;
+                    
                     //sort
+                    /*
                     _MetaDB_Res::Qsort(res, 0, Samples.size());
     
                     vector <_MetaDB_Res> res_return;
                     for (int i = 0; i < n; i ++)
                     if (res[i].Sim_value >= min_s)
                            res_return.push_back(res[i]);                        
+                    */
+                    _MetaDB_Res::Qsort(non_zero_res, 0, non_zero_count);
+    
+                    vector <_MetaDB_Res> res_return;
+                    for (int i = 0; i < n; i ++)
+                           res_return.push_back(non_zero_res[i]); 
                     
                     delete [] res;
+                    delete [] non_zero_res;
                     
                     return res_return;
                     }
                     
 int _MetaDB_search:: Load_Abd_Hdd(string id, float * abd){
 					if (Mem_mode == 0) return 0;
-					memset(abd, 0, Comp_tree.Get_LeafN() * sizeof(float));
+					memset(abd, 0, MetaDB_Comper.Get_dim() * sizeof(float));
 	 				string hdd_path = Get_Sample_Hdd_Path(id);
 					 //fgets
                     FILE * fptr = fopen(hdd_path.c_str(), "r");

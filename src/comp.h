@@ -1,4 +1,4 @@
-// Updated at June 9, 2018
+// Updated at July 29, 2019
 // Updated by Xiaoquan Su
 // Bioinformatics Group, Single-Cell Research Center, QIBEBT, CAS
 // version 3.1 or above with _Table_Format
@@ -18,16 +18,12 @@
 #include "table_format.h"
 #include "db.h"
 #include "otu_parser.h"
+#include "dist.h"
 
 #ifndef COMP_H
 #define COMP_H
 
- //gg_97
-/*
-#define LeafN 99322
-#define OrderN 99321
-*/
-int REG_SIZE = 70;
+#define REG_SIZE 70
 
 using namespace std;
 
@@ -35,28 +31,28 @@ class _Comp_Tree{
       
       public:
              _Comp_Tree(){                           
-                           REG_SIZE = 70;                           
                            LeafN = 0;
                            OrderN = 0;                 
                            Init();
                           }
     
             _Comp_Tree(char db){
-                        Database.Set_DB(db); 
-                        REG_SIZE = 70;                          
+                        Database.Set_DB(db);                          
                         LeafN = 0;
-                        OrderN = 0;
-                        Init();
+                        OrderN = 0;                        
+                        Init();   
+                        Otu_parser = _OTU_Parser(Database);                   
                         }
     
-             int Load_abd(const char * infilename, float * Abd, bool is_cp_correct);
-             int Load_abd(const char * infilename, float * Abd);
-             int Load_abd(_Table_Format * table, float * Abd, int sample, bool is_cp_correct); //Load by table_format
-             int Load_abd(_Table_Format * table, float * Abd, int sample); //Load by table_format
+             virtual int Load_abd(const char * infilename, float * Abd, bool is_cp_correct);
+             virtual int Load_abd(const char * infilename, float * Abd);
+             virtual int Load_abd(_Table_Format * table, float * Abd, int sample, bool is_cp_correct); //Load by table_format
+             virtual int Load_abd(_Table_Format * table, float * Abd, int sample); //Load by table_format
 
              float Calc_sim(float * Abd_1, float * Abd_2, bool w);
              float Calc_sim(float * Abd_1, float * Abd_2);
              float Calc_sim_unweight(float * Abd_1, float * Abd_2);
+             float Calc_sim(float * Abd_1, float * Abd_2, int mode); //0: MS; 1: Unweighted MS; 2: Cos; 3: Eu; 4: JSD 
              
              int Get_LeafN(){
                  return LeafN;
@@ -67,8 +63,9 @@ class _Comp_Tree{
                     return Id[n];
                     }
              
-      private:
+      protected:
               _PMDB Database;
+               _OTU_Parser Otu_parser;
     
               vector <float> Dist_1;
               vector <float> Dist_2;
@@ -78,8 +75,7 @@ class _Comp_Tree{
               vector <int> Order_d;
               
               vector <string> Id; 
-              
-              hash_map <string, float, std_string_hash> Cp_number;
+
               hash_map <string, int, std_string_hash> Id_hash;
     
               void Init();
@@ -92,16 +88,16 @@ class _Comp_Tree{
 
 void _Comp_Tree::Init(){    
                     
-     //load tree        
      LeafN = Load_id();
-     OrderN = Load_order();
-    
-     //load cp number         
-     Database.Load_Copy_Number(Cp_number);
-    
      //load id hash
-    for (int i = 0; i < LeafN; i ++)
+     for (int i = 0; i < LeafN; i ++)
         Id_hash[Id[i]] = i;
+        
+     OrderN = 0;
+     //load tree  
+     if (Database.Get_Is_Tree())      
+        OrderN = Load_order();
+
      }
 
 int _Comp_Tree::Load_id(){
@@ -122,6 +118,7 @@ int _Comp_Tree::Load_id(){
      
      infile.close();
      infile.clear();
+     
      return count;
      }
 
@@ -162,7 +159,7 @@ int _Comp_Tree::Load_abd(const char * infilename, float * Abd, bool is_cp_correc
     
     memset(Abd, 0, LeafN * sizeof(float));
     
-    hash_map<string, int, std_string_hash> otu_count;
+    hash_map<string, float, std_string_hash> otu_count;
     hash_map<string, float, std_string_hash> otu_abd;
      
     _OTU_Parser otu_parser;
@@ -173,38 +170,43 @@ int _Comp_Tree::Load_abd(const char * infilename, float * Abd, bool is_cp_correc
         
     //cp_number_correct
     
-    for (hash_map<string, int, std_string_hash>::iterator miter = otu_count.begin(); miter != otu_count.end(); miter ++){
+    for (hash_map<string, float, std_string_hash>::iterator miter = otu_count.begin(); miter != otu_count.end(); miter ++){
         
         float cp_no = 1.0;
         
         if (is_cp_correct)
-           if (Cp_number.count(miter->first) != 0)
-                                          cp_no = Cp_number[miter->first];
+           cp_no = Otu_parser.Get_cp_by_OTU(miter->first);
+           
         otu_abd[miter->first] = (float) miter->second / cp_no;
         total += otu_abd[miter->first];
         }
         
     //norm
     total /= 100.0;
+    int mapped_otu_count = 0;
     for (hash_map<string, float, std_string_hash>::iterator miter = otu_abd.begin(); miter != otu_abd.end(); miter ++){
         miter->second /= total;
-        if (Id_hash.count(miter->first) != 0)
+        //debug
+        //cout << miter->first << endl;
+        
+        if (Id_hash.count(miter->first) != 0){
             Abd[Id_hash[miter->first]] = miter->second;
+            mapped_otu_count ++;
+            }
         }
         
-    return otu_abd.size();
+    return mapped_otu_count;
     }
 
 int _Comp_Tree::Load_abd(const char * infilename, float * Abd){
-    
+        
     return Load_abd(infilename, Abd, true);
     }
 
 int _Comp_Tree::Load_abd(_Table_Format * table, float *Abd, int sample, bool is_cp_correct){
     
     memset(Abd, 0, LeafN * sizeof(float));
-    
-    int count = 0;
+
     vector <string> otus = table->Get_Feature_Names();
     vector <float> abds = table->Get_Abd(sample);
     
@@ -218,22 +220,24 @@ int _Comp_Tree::Load_abd(_Table_Format * table, float *Abd, int sample, bool is_
             string a_otu = Check_OTU(otus[i]);
             float cp_no = 1.0;
             if (is_cp_correct)
-               if (Cp_number.count(a_otu) != 0)
-                                          cp_no = Cp_number[a_otu];
+                       cp_no = Otu_parser.Get_cp_by_OTU(a_otu);
                                            
-            if (Id_hash.count(a_otu) != 0){
+            //if (Id_hash.count(a_otu) != 0){
                 otu_abd[a_otu] = abds[i] / cp_no;
                 total += otu_abd[a_otu];
-                }                
-            count ++;
+           //     }                
             }    
     //norm
     total /= 100.0;
+    int mapped_otu_count = 0;
     for (hash_map<string, float, std_string_hash>::iterator miter = otu_abd.begin(); miter != otu_abd.end(); miter ++){
                           miter->second /= total;
-                          Abd[Id_hash[miter->first]] = miter->second;
+                          if (Id_hash.count(miter->first) != 0){
+                             Abd[Id_hash[miter->first]] = miter->second;
+                             mapped_otu_count ++;
+                             }
                           }
-    return count;
+    return mapped_otu_count;
     }
 
 int _Comp_Tree::Load_abd(_Table_Format * table, float *Abd, int sample){
@@ -242,9 +246,29 @@ int _Comp_Tree::Load_abd(_Table_Format * table, float *Abd, int sample){
 
 float _Comp_Tree::Calc_sim(float * Abd_1, float * Abd_2, bool w){
       
+      if (!Database.Get_Is_Tree()) return 1.0 - Calc_Dist_JSD(Abd_1, Abd_2, LeafN);
+      
       if (w) return Calc_sim(Abd_1, Abd_2);
       else return Calc_sim_unweight(Abd_1, Abd_2);
       
+      }
+
+float _Comp_Tree::Calc_sim(float * Abd_1, float * Abd_2, int mode){ //0: MS; 1: Unweighted MS; 2: Cos; 3: Eu; 4: JSD
+      
+      if (!Database.Get_Is_Tree()){
+                                   if (mode < 2) mode = 4; //for no tree, default is 4: JSD
+                                   }
+      
+      switch (mode){
+             case 0: return Calc_sim(Abd_1, Abd_2); break;
+             case 1: return Calc_sim_unweight(Abd_1, Abd_2); break;
+             case 2: return 1.0 - Calc_Dist_Cos(Abd_1, Abd_2, LeafN); break;
+             case 3: return 1.0 - Calc_Dist_E(Abd_1, Abd_2, LeafN); break;
+             case 4: return 1.0 - Calc_Dist_JSD(Abd_1, Abd_2, LeafN); break;
+             case 5: return 1.0 - Calc_Dist_Bray_Curits(Abd_1, Abd_2, LeafN); break;
+             default: return 1.0 - Calc_Dist_JSD(Abd_1, Abd_2, LeafN); break;
+             }
+      return 0;
       }
 
 float _Comp_Tree::Calc_sim(float * Abd_1, float * Abd_2){
