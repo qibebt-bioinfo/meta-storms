@@ -14,10 +14,10 @@
 #
 #Commands:
 #Make database
-MetaDB-make -T taxa.OTU.Count -o database
+MetaDB-make-otu -T taxa.OTU.Count -o otu_database
 #
 #Search database
-MetaDB-search -T taxa.OTU.Count -d database.mdb -o query.out
+MetaDB-search-otu -T taxa.OTU.Count -d otu_database.mdb -o query.out
 #
 #Predict healthy status
 MetaDB-parse-meta -i query.out -m meta.txt -o query.out.meta
