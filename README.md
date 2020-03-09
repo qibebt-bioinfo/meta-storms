@@ -15,12 +15,13 @@
 - [Notice before use](#notice-before-use)
 - [Pre-computing](#pre-computing)
 - [Example dataset](#example-dataset)
-- [Build a MSE database](#)
-- [Search the MSE database](#)
-- [Multiple classification based on search result](#)
-- [Microbiome Novelty Score (MNS) based on search results](#)
-- [Microbiome Attention Score (MAS) based on search results](#)
+- [Build a MSE database](#build-a-mse-database)
+- [Search the MSE database](#search-the-mse-database)
+- [Multiple classification based on search result](#multiple-classification-based-on-search-result)
+- [Microbiome Novelty Score (MNS) based on search results](#microbiome-novelty-score-mns-based-on-search-results)
+- [Microbiome Attention Score (MAS) based on search results](#microbiome-attention-score-mas-based-on-search-results)
 - [File Format](#file-formatsupplementary)
+- [Contact](#contact)
 
 ## Introduction
 
