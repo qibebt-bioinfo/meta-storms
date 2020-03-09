@@ -599,4 +599,4 @@ An species table is a plain-text file that contains the Species and their sequen
 
 Any problem please contact MSE development team:
 
-​	**JING Gongchao**&nbsp&nbsp&nbsp&nbspEmail: jinggc@qibebt.ac.cn
+​	**JING Gongchao**&nbsp;&nbsp;&nbsp;&nbsp;Email: jinggc@qibebt.ac.cn
