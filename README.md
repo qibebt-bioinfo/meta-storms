@@ -117,7 +117,7 @@ make
 
 1. For source code package based installation, please make sure proper versions of compilers have been installed: gcc 4.4 or higher for Linux / gcc-8 or higher for Mac OS X (refer to Software Requirements).
 
-2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by Parallel-META 3 (version 3.2 or hihger; <http://bioinfo.single-cell.cn/parallel-meta.html>) or QIIME (version 1.9.1; <http://qiime.org>). Meta-Storms 2 software can also accept OTU tables (refer to[ **File format**](#file-format)). However, if starting from DNA sequences, Parallel-META 3 and QIIME are the recommended software for converting amplicon sequences to OTU tables (refer to[ **Pre-computing**](#pre-computing)).
+2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by Parallel-META 3 (version 3.2 or hihger; <http://bioinfo.single-cell.cn/parallel-meta.html>) or QIIME (version 1.9.1; <http://qiime.org>). Meta-Storms 2 software can also accept OTU tables (refer to[ **File format**](#file-formatsupplementary)). However, if starting from DNA sequences, Parallel-META 3 and QIIME are the recommended software for converting amplicon sequences to OTU tables (refer to[ **Pre-computing**](#pre-computing)).
 
 3. Make sure that Meta-Storms 2 has the write permission in the output path.
 
@@ -133,7 +133,7 @@ For a give sequence file (FASTA or FASTQ format, eg. sample1.fa), to convert the
 
 ​	***PM-parallel-meta -f F -r sample1.fa -o sample1.out***
 
-Then the output file *sample1.out/classification.txt* is qualified as the input for Meta-Storms 2 (refer to [**Single sample**](#_bookmark10)). For multiple samples as input, samples should be listed in the sample list (refer to [**Sample list**](#_bookmark10)).
+Then the output file *sample1.out/classification.txt* is qualified as the input for Meta-Storms 2 (refer to [**Single sample**](#single-sample-file-and-sample-list)). For multiple samples as input, samples should be listed in the sample list (refer to [**Sample list**](#single-sample-file-and-sample-list)).
 
 ### Pre-computing by QIIME
 
@@ -143,11 +143,11 @@ For a give sequence file (FASTA format, eg. sample1.fa), to convert the sequence
 
 ​	***MetaDB-parse-qiime-otu -i sample1.out/sample1_otus.txt -o sample1.out/classification.txt***
 
-Then the output file *sample1.out/classification.txt* is qualified as the input for Meta-Storms 2 (refer to [**Single sample**](#_bookmark10)**)**. For multiple samples as input, samples should be listed in the sample list (refer to [**Sample list**](#_bookmark10)).
+Then the output file *sample1.out/classification.txt* is qualified as the input for Meta-Storms 2 (refer to [**Single sample**](#single-sample-file-and-sample-list)**)**. For multiple samples as input, samples should be listed in the sample list (refer to [**Sample list**](#single-sample-file-and-sample-list)).
 
 ## Example dataset
 
-Here we provide a demo dataset with 20 human oral microbiome samples in two different healthy statuses from *Huang, et al., 2014**. The pre-computing result (in the [OTU table ](#otu-table)format and derived from Parallel-META 3) and the meta-data are in the “**example**” folder in the installation package. We use this dataset to demonstrate all the following example commands.
+Here we provide a demo dataset with 20 human oral microbiome samples in two different healthy statuses from *Huang, et al., 2014**. The pre-computing result (in the [OTU table ](#otu-table)format and derived from Parallel-META 3) and the meta-data are in the “[**example**](#example-dataset)” folder in the installation package. We use this dataset to demonstrate all the following example commands.
 
 Please change your work directory to the “**example**” folder by
 
@@ -159,7 +159,7 @@ Please change your work directory to the “**example**” folder by
 
 ### Build a MSE database by OTU
 
-The command of **MetaDB-make-otu** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* single sample list (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table ](#_bookmark11)(OTU table format, by -T). It outputs a database file (**.mdb*).
+The command of **MetaDB-make-otu** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* single sample list (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table ](#otu-table)(OTU table format, by -T). It outputs a database file (**.mdb*).
 
 **Usage:**
 
@@ -179,13 +179,13 @@ The command of **MetaDB-make-otu** builds a new MSE database for Meta-Storms 2 b
 	
 	[Other options]
 		-h Help
-Example (make sure you are in “[**example**](#_bookmark3)” path):
+Example (make sure you are in “[**example**](#example-dataset)” path):
 
 ​	***MetaDB-make-otu -T taxa.OTU.Count -o database***
 
 ### Build a MSE database by function
 
-The command of **MetaDB-make-func** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* single sample list (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [KO table ](#_bookmark11)(KO table format, by -T). It outputs a database file (**.mdbf*).
+The command of **MetaDB-make-func** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* single sample list (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [KO table ](#ko-table)(KO table format, by -T). It outputs a database file (**.mdbf*).
 
 **Usage:**
 
@@ -205,7 +205,7 @@ The command of **MetaDB-make-func** builds a new MSE database for Meta-Storms 2 
 	
 	[Other options]
 		-h Help
-Example (make sure you are in “[**example**](#_bookmark3)” path):
+Example (make sure you are in “[**example**](#)” path):
 
 ​	***MetaDB-make-func -T taxa.KO.Count -o database***
 
@@ -231,7 +231,7 @@ The command of **MetaDB-make-sp** builds a new MSE database for Meta-Storms 2 ba
 	
 	[Other options]
 	  	-h Help
-Example (make sure you are in “[**example**](#_bookmark3)” path):
+Example (make sure you are in “[**example**](#example-dataset)” path):
 
 ​	***MetaDB-make-sp -T taxa.OTU.Count -o database***
 
@@ -241,7 +241,7 @@ The HDD (Hard Drive Disk) mode uses the re-encoding technique to minimize the RA
 
 For an existing database (**.mdb*), HDD mode can also be enabled by making its HDD files via the command below. Then the **.mdb.hdd* would be generated and stored under the same directory as the database.
 
-Example (make sure you are in “[**example**](#_bookmark3)” path):
+Example (make sure you are in “[**example**](#example-dataset)” path):
 
 ​	***MetaDB-make-otu -d database.mdb***
 
@@ -278,11 +278,11 @@ Example: Here you can make another database named as "*database_2.mdb*"
 
 ### Search via Meta-Storms 2 by OTU
 
-Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME ](http://qiime.org/)using the Greengenes database as reference (refer to [**Pre-computing**](#_bookmark4)). The database is built by **MetaDB- make-otu** (**.mdb*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME ](http://qiime.org/)using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB- make-otu** (**.mdb*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
-The query sample(s) can be provided via either (*i*) [single sample ](#_bookmark10)(for a single sample in Parallel-META 3 format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table ](#_bookmark11)(for OTU table format, by -T).
+The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in Parallel-META 3 format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table ](#otu-table)(for OTU table format, by -T).
 
-We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [**HDD mode**](#_bookmark5)).
+We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [**HDD mode**](#hdd-mode)).
 
 **Usage:**
 
@@ -312,17 +312,17 @@ We also recommend users to enable the HDD mode for large databases to minimize t
 	[Other options]
 		-t CPU core number, default is auto
 		-h Help
-Example(make sure you are in “[**example**](#_bookmark3)” path):
+Example(make sure you are in “[**example**](#example-dataset)” path):
 
 ​	***MetaDB-search-otu -d database.mdb -T taxa.OTU.Count -o query.out***
 
 ### Search via Meta-Storms 2 by function
 
-Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME ](http://qiime.org/)using the Greengenes database as reference (refer to [**Pre-computing**](#_bookmark4)). The database is built by **MetaDB- make-func** (**.mdbf*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME ](http://qiime.org/)using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB- make-func** (**.mdbf*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
-The query sample(s) can be provided via either (*i*) [single sample ](#_bookmark10)(for a single sample in Parallel-META 3 format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [KO table ](#_bookmark11)(for KO table format, by -T).
+The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in Parallel-META 3 format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [KO table ](#ko-table)(for KO table format, by -T).
 
-We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [**HDD mode**](#_bookmark5)).
+We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [**HDD mode**](#hdd-mode)).
 
 **Usage:**
 
@@ -352,15 +352,15 @@ We also recommend users to enable the HDD mode for large databases to minimize t
 	[Other options]
 		-t CPU core number, default is auto
 		-h Help	
-Example(make sure you are in “[**example**](#_bookmark3)” path):
+Example(make sure you are in “[**example**](#example-dataset)” path):
 
 ​	***MetaDB-search-func -d database.mdbf -T taxa.KO.Count -o query.func.out***
 
 ### Search via Meta-Storms 2 by species
 
-Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME ](http://qiime.org/)using the Greengenes database as reference (refer to [**Pre-computing**](#_bookmark4)). The database is built by **MetaDB- make-sp** (**.mdbs*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME ](http://qiime.org/)using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB- make-sp** (**.mdbs*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
-The query sample(s) can be provided via either (*i*) [single sample ](#_bookmark10)(for a single sample in Parallel-META 3 format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [species table ](#_bookmark11)(for species table format, by -T).
+The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in Parallel-META 3 format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [species table ](#species-table)(for species table format, by -T).
 
 We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [**HDD mode**](#_bookmark5)).
 
@@ -413,7 +413,7 @@ The similarity between query sample(s) and matched sample(s) is a phylogeny-base
 
 ### Meta-data prediction
 
-Important features of the query sample, such as the meta-data of habitat, status, etc., can potentially be predicted based on the meta-data of its matches. From a search output generated by [**MetaDB-search**,](#_bookmark6) the meta-data of the query sample can be predicted by:
+Important features of the query sample, such as the meta-data of habitat, status, etc., can potentially be predicted based on the meta-data of its matches. From a search output generated by [**MetaDB-search**,](#search-the-mse-database) the meta-data of the query sample can be predicted by:
 
 **Usage:**
 
@@ -436,13 +436,13 @@ Usage for the -s:
 
 When the query sample has already been included in the database, the search result must contain the query samples itself as the top hit since they have the 100% similarity, which causes the bias in meta-data prediction. Here we can use the parameter –s 1 to exclude this top hit in the meta-data prediction to avoid such bias.
 
-Example(make sure you are in “[**example**](#_bookmark3)” path):
+Example(make sure you are in “[**example**](#example-dataset)” path):
 
 ​	***MetaDB-parse-meta -i query.out -m meta.txt -o query.out.meta***
 
 ### Multiple classification output
 
-[**MetaDB-parse-meta** ](#_bookmark7)generates the predicted meta-data with the assigned scores (always between 0 and 1). In the output, for each of the query samples, all of its predicted meta-data are listed in tandem in a single line, e.g.
+[**MetaDB-parse-meta** ](#meta-data-prediction)generates the predicted meta-data with the assigned scores (always between 0 and 1). In the output, for each of the query samples, all of its predicted meta-data are listed in tandem in a single line, e.g.
 
 | **#ID**    | **Meta-data** | **Score** | **Meta-data** | **Score** |
 | ---------- | ------------- | --------- | ------------- | --------- |
@@ -457,7 +457,7 @@ The number of predicted meta-data is assigned by parameter -r, and default is 1 
 
 ### Calculate the Microbiome Novelty Score (MNS)
 
-With the search output generated by [**MetaDB-search**](#_bookmark6), the Microbiome Novelty Score (MNS) of each sample can be calculated by:
+With the search output generated by [**MetaDB-search**](#search-the-mse-database), the Microbiome Novelty Score (MNS) of each sample can be calculated by:
 
 **Usage:**
 
@@ -478,13 +478,13 @@ Usage for the -s:
 
 When the query sample has already been included in the database, the search result must contain the query samples itself as the top hit since they have the 100% similarity, which causes bias in calculating the MNS. Here we can use the parameter –s 1 to exclude this top hit in calculating the MNS.
 
-Example (make sure you are in “[**example**](#_bookmark3)” path):
+Example (make sure you are in “[**example**](#example-dataset)” path):
 
 ​	***MetaDB-parse-mns -i query.out -o query.out.mns***
 
 ### Microbiome Novelty Score (MNS) output
 
-[**MetaDB-parse-mns** ](#_bookmark9)generates the MNS (always between 0 and 1) of each query sample in a single line, e.g.
+[**MetaDB-parse-mns** ](#microbiome-novelty-score-mns-based-on-search-results)generates the MNS (always between 0 and 1) of each query sample in a single line, e.g.
 
 | **#ID**    | **MNS** |
 | ---------- | ------- |
@@ -499,7 +499,7 @@ In the output above, the first query sample (q_id_0) reports a MNS of 0.06.
 
 ### Calculate the Microbiome Attention Score (MAS)
 
-With the search output generated by [**MetaDB-search**](#_bookmark6), the Microbiome Attention Score (MAS) of each sample can be calculated by:
+With the search output generated by [**MetaDB-search**](#search-the-mse-database), the Microbiome Attention Score (MAS) of each sample can be calculated by:
 
 **Usage:**
 
@@ -523,13 +523,13 @@ Usage for the -s:
 
 When the query sample has already been included in the database, the search result must contain the query samples itself as the top hit since they have the 100% similarity, which causes bias in calculating the MAS. Here we can use the parameter –s 1 to exclude this top hit in calculating the MAS.
 
-Example (make sure you are in “[**example**](#_bookmark3)” path):
+Example (make sure you are in “[**example**](#example-dataset)” path):
 
 ​	***MetaDB-parse-mas -i query.out -o query.out.mas***
 
 ### Microbiome Attention Score (MAS) output
 
-[**MetaDB-parse-mas** ](#_bookmark9)generates the MAS of each query sample in a single line, e.g.
+[**MetaDB-parse-mas** ](#microbiome-attention-score-mas-based-on-search-results)generates the MAS of each query sample in a single line, e.g.
 
 | **#ID**    | **MAS**  |
 | ---------- | -------- |
@@ -544,7 +544,7 @@ Meta-Storms 2 accepts the alternative two formats as input.
 
 ### Single sample file and sample list
 
-A single sample is the OTUs and taxonomy information of a single microbiome sample profiled by [Parallel-META 3 ](#_bookmark1)or [QIIME ](#_bookmark2)from the amplicon sequences (refer to [**Pre-computing**](#_bookmark0) for details). It is a plain-text file, normally named as “*classification.txt*”. An example of the single sample is below:
+A single sample is the OTUs and taxonomy information of a single microbiome sample profiled by [Parallel-META 3 ](#_bookmark1)or [QIIME ](#_bookmark2)from the amplicon sequences (refer to [**Pre-computing**](#pre-computing) for details). It is a plain-text file, normally named as “*classification.txt*”. An example of the single sample is below:
 
 | **#Database_OTU** | **Count** |
 | ----------------- | --------- |
@@ -572,6 +572,29 @@ An OTU table is a plain-text file that contains the OTUs and their sequence numb
 | **Sample_4**   | 58        | 30        | 23        | 3         | 0         |
 | **Sample_5**   | 95        | 5         | 5         | 4         | 0         |
 
+### KO table
+
+An KO table is a plain-text file that contains the KOs and their sequence numbers for each of multiple samples. An example of the KO table is bellow
+
+| **#Sample_ID** | **KO_1** | **KO_2** | **KO_3** | **KO_4** | **KO_5** |
+| -------------- | --------- | --------- | --------- | --------- | --------- |
+| **Sample_1**   | 10        | 17        | 38        | 2         | 2         |
+| **Sample_2**   | 0         | 5         | 57        | 0         | 0         |
+| **Sample_3**   | 2         | 35        | 7         | 0         | 0         |
+| **Sample_4**   | 58        | 30        | 23        | 3         | 0         |
+| **Sample_5**   | 95        | 5         | 5         | 4         | 0         |
+
+### Species table
+
+An species table is a plain-text file that contains the Species and their sequence numbers for each of multiple samples. An example of the species table is bellow
+
+| **#Sample_ID** | **sp_1** | **sp_2** | **sp_3** | **sp_4** | **sp_5** |
+| -------------- | --------- | --------- | --------- | --------- | --------- |
+| **Sample_1**   | 10        | 17        | 38        | 2         | 2         |
+| **Sample_2**   | 0         | 5         | 57        | 0         | 0         |
+| **Sample_3**   | 2         | 35        | 7         | 0         | 0         |
+| **Sample_4**   | 58        | 30        | 23        | 3         | 0         |
+| **Sample_5**   | 95        | 5         | 5         | 4         | 0         |
 ## Contact
 
 Any problem please contact MSE development team:
