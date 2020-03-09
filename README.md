@@ -82,11 +82,11 @@ The package should take less than 1 minute to install on a computer with the spe
 
 ### Tips for Automatic Installation
 
-1. Please “cd meta-storms-2-std” directory, before running the automatic installer.
+1. Please "cd meta-storms-2-std” directory, before running the automatic installer.
 
-2. The automatic installer configures the environment variables to the default configuration specified in the file of “~/.bashrc” or “~/.bash_profile”. If you prefer to configure the environment variables to other configuration file, please choose the option of manual installation below.
+2. The automatic installer configures the environment variables to the default configuration specified in the file of "~/.bashrc" or "~/.bash_profile". If you prefer to configure the environment variables to other configuration file, please choose the option of manual installation below.
 
-3. If the environment variables are not activated automatically, please enable them manually by running the command “source ~/.bashrc”.
+3. If the environment variables are not activated automatically, please enable them manually by running the command "source ~/.bashrc".
 
 4. If the automatic installer fails, Meta-Storms can still be installed manually by the following options.
 
@@ -99,7 +99,7 @@ a. Extract the package:
 tar –xzvf meta-storms-2-std-src.tar.gz
 ```
 
-b. Configure the environment variables (the default environment variable configuration file is “~/.bashrc”):
+b. Configure the environment variables (the default environment variable configuration file is "~/.bashrc”):
 
 ```
 export MetaStorms=Path to Meta-Storms 2
@@ -147,9 +147,9 @@ Then the output file *sample1.out/classification.txt* is qualified as the input 
 
 ## Example dataset
 
-Here we provide a demo dataset with 20 human oral microbiome samples in two different healthy statuses from *Huang, et al., 2014**. The pre-computing result (in the [OTU table ](#otu-table)format and derived from [Parallel-META 3]<http://bioinfo.single-cell.cn/parallel-meta.html>) and the meta-data are in the “[**example**](#example-dataset)” folder in the installation package. We use this dataset to demonstrate all the following example commands.
+Here we provide a demo dataset with 20 human oral microbiome samples in two different healthy statuses from *Huang, et al., 2014**. The pre-computing result (in the [OTU table ](#otu-table)format and derived from [Parallel-META 3]<http://bioinfo.single-cell.cn/parallel-meta.html>) and the meta-data are in the "[**example**](#example-dataset)” folder in the installation package. We use this dataset to demonstrate all the following example commands.
 
-Please change your work directory to the “**example**” folder by
+Please change your work directory to the "**example**” folder by
 
 ​	***cd example***
 
@@ -179,7 +179,7 @@ The command of **MetaDB-make-otu** builds a new MSE database for Meta-Storms 2 b
 	
 	[Other options]
 		-h Help
-Example (make sure you are in “[**example**](#example-dataset)” path):
+Example (make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-make-otu -T taxa.OTU.Count -o database***
 
@@ -205,7 +205,7 @@ The command of **MetaDB-make-func** builds a new MSE database for Meta-Storms 2 
 	
 	[Other options]
 		-h Help
-Example (make sure you are in “[**example**](#)” path):
+Example (make sure you are in "[**example**](#)” path):
 
 ​	***MetaDB-make-func -T taxa.KO.Count -o database***
 
@@ -231,7 +231,7 @@ The command of **MetaDB-make-sp** builds a new MSE database for Meta-Storms 2 ba
 	
 	[Other options]
 	  	-h Help
-Example (make sure you are in “[**example**](#example-dataset)” path):
+Example (make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-make-sp -T taxa.OTU.Count -o database***
 
@@ -241,7 +241,7 @@ The HDD (Hard Drive Disk) mode uses the re-encoding technique to minimize the RA
 
 For an existing database (**.mdb*), HDD mode can also be enabled by making its HDD files via the command below. Then the **.mdb.hdd* would be generated and stored under the same directory as the database.
 
-Example (make sure you are in “[**example**](#example-dataset)” path):
+Example (make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-make-otu -d database.mdb***
 
@@ -312,7 +312,7 @@ We also recommend users to enable the HDD mode for large databases to minimize t
 	[Other options]
 		-t CPU core number, default is auto
 		-h Help
-Example(make sure you are in “[**example**](#example-dataset)” path):
+Example(make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-search-otu -d database.mdb -T taxa.OTU.Count -o query.out***
 
@@ -352,7 +352,7 @@ We also recommend users to enable the HDD mode for large databases to minimize t
 	[Other options]
 		-t CPU core number, default is auto
 		-h Help	
-Example(make sure you are in “[**example**](#example-dataset)” path):
+Example(make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-search-func -d database.mdbf -T taxa.KO.Count -o query.func.out***
 
@@ -392,7 +392,7 @@ We also recommend users to enable the HDD mode for large databases to minimize t
 	[Other options]
 		-t CPU core number, default is auto
 		-h Help
-Example(make sure you are in “[**example**](#example-dataset)” path):
+Example(make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-search-sp -d database.mdbs -T taxa.sp.Count -o query.sp.out***
 
@@ -407,7 +407,7 @@ Example(make sure you are in “[**example**](#example-dataset)” path):
 
 In the output above, the first query sample (q_id_0) matches against the reference sample (ref_id_x) with a similarity of 0.9823. In addition, q_id_0 also matches ref_id_v with a similarity of 0.9758. The number of matches is assigned by the parameter -n, and default is 10.
 
-The similarity between query sample(s) and matched sample(s) is a phylogeny-based similarity that is computed using the Meta-Storms scoring function. This algorithm takes the relative abundance of OTUs and their binary phylogeny between two samples as input, and output their quantitative similarities (always between 0 and 1). For high performance and parallel computing, this algorithm is optimized by non-recursive transformation, memory recycling and variable reallocation. Please also refer to “Meta-Storms: efficient search for similar microbial communities based on a novel indexing scheme and similarity score for metagenomic data, *Bioinformatics*, 2012” for details.
+The similarity between query sample(s) and matched sample(s) is a phylogeny-based similarity that is computed using the Meta-Storms scoring function. This algorithm takes the relative abundance of OTUs and their binary phylogeny between two samples as input, and output their quantitative similarities (always between 0 and 1). For high performance and parallel computing, this algorithm is optimized by non-recursive transformation, memory recycling and variable reallocation. Please also refer to "Meta-Storms: efficient search for similar microbial communities based on a novel indexing scheme and similarity score for metagenomic data, *Bioinformatics*, 2012” for details.
 
 ## Multiple classification based on search result
 
@@ -436,7 +436,7 @@ Usage for the -s:
 
 When the query sample has already been included in the database, the search result must contain the query samples itself as the top hit since they have the 100% similarity, which causes the bias in meta-data prediction. Here we can use the parameter –s 1 to exclude this top hit in the meta-data prediction to avoid such bias.
 
-Example(make sure you are in “[**example**](#example-dataset)” path):
+Example(make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-parse-meta -i query.out -m meta.txt -o query.out.meta***
 
@@ -449,7 +449,7 @@ Example(make sure you are in “[**example**](#example-dataset)” path):
 | **q_id_0** | Healthy       | 0.75      | Disease       | 0.25      |
 | **q_id_1** | Disease       | 0.72      | Healthy       | 0.28      |
 
-In the output above, the first query sample (q_id_0) is predicted as “Healthy” with a score of 0.75, and “Disease” with a score of 0.25. The predicted meta-data are sorted by their scores.                              
+In the output above, the first query sample (q_id_0) is predicted as "Healthy” with a score of 0.75, and "Disease” with a score of 0.25. The predicted meta-data are sorted by their scores.                              
 
 The number of predicted meta-data is assigned by parameter -r, and default is 1 (i.e., only reporting the predicted meta-data with the highest score).
 
@@ -478,7 +478,7 @@ Usage for the -s:
 
 When the query sample has already been included in the database, the search result must contain the query samples itself as the top hit since they have the 100% similarity, which causes bias in calculating the MNS. Here we can use the parameter –s 1 to exclude this top hit in calculating the MNS.
 
-Example (make sure you are in “[**example**](#example-dataset)” path):
+Example (make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-parse-mns -i query.out -o query.out.mns***
 
@@ -523,7 +523,7 @@ Usage for the -s:
 
 When the query sample has already been included in the database, the search result must contain the query samples itself as the top hit since they have the 100% similarity, which causes bias in calculating the MAS. Here we can use the parameter –s 1 to exclude this top hit in calculating the MAS.
 
-Example (make sure you are in “[**example**](#example-dataset)” path):
+Example (make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-parse-mas -i query.out -o query.out.mas***
 
@@ -544,7 +544,7 @@ Meta-Storms 2 accepts the alternative two formats as input.
 
 ### Single sample file and sample list
 
-A single sample is the OTUs and taxonomy information of a single microbiome sample profiled by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME ](http://qiime.org/)from the amplicon sequences (refer to [**Pre-computing**](#pre-computing) for details). It is a plain-text file, normally named as “*classification.txt*”. An example of the single sample is below:
+A single sample is the OTUs and taxonomy information of a single microbiome sample profiled by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME ](http://qiime.org/)from the amplicon sequences (refer to [**Pre-computing**](#pre-computing) for details). It is a plain-text file, normally named as "*classification.txt*”. An example of the single sample is below:
 
 | **#Database_OTU** | **Count** |
 | ----------------- | --------- |
@@ -552,7 +552,7 @@ A single sample is the OTUs and taxonomy information of a single microbiome samp
 | OTU_2             | 17        |
 | OTU_3             | 38        |
 
-A sample list is a plain-text file for listing multiple samples (by –l) as Meta-Storms 2 input, which consists of two columns: the sample IDs and the directories of samples’ “*classification.txt*” files, e.g. 
+A sample list is a plain-text file for listing multiple samples (by –l) as Meta-Storms 2 input, which consists of two columns: the sample IDs and the directories of samples’ "*classification.txt*” files, e.g. 
 
 | **Sample_1** | /home/data/single_sample/Sample_2/classification.txt |
 | ------------ | ---------------------------------------------------- |
