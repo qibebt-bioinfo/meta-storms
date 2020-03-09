@@ -8,9 +8,13 @@
 ## Contents
 
 - [Introduction](#introduction)
+- [Download](#Download)
+- [Package](#Package)
 - [System Requirement and dependency](#system-requirement-and-dependency)
 - [Installation guide](#installation-guide)
-- [Supplementary](#supplementary)
+- [Notice before use](#notice-before-use)
+- [Pre-computing](#pre-computing)
+- [Example dataset](#example-dataset)
 
 ## Introduction
 
