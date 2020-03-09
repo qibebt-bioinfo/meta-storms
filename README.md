@@ -84,9 +84,9 @@ The package should take less than 1 minute to install on a computer with the spe
 
 1. Please "cd meta-storms-2-std” directory, before running the automatic installer.
 
-2. The automatic installer configures the environment variables to the default configuration specified in the file of "~/.bashrc" or "~/.bash_profile". If you prefer to configure the environment variables to other configuration file, please choose the option of manual installation below.
+2. The automatic installer configures the environment variables to the default configuration specified in the file of "\~/.bashrc" or "\~/.bash_profile". If you prefer to configure the environment variables to other configuration file, please choose the option of manual installation below.
 
-3. If the environment variables are not activated automatically, please enable them manually by running the command "source ~/.bashrc".
+3. If the environment variables are not activated automatically, please enable them manually by running the command "source \~/.bashrc".
 
 4. If the automatic installer fails, Meta-Storms can still be installed manually by the following options.
 
@@ -99,7 +99,7 @@ a. Extract the package:
 tar –xzvf meta-storms-2-std-src.tar.gz
 ```
 
-b. Configure the environment variables (the default environment variable configuration file is "~/.bashrc”):
+b. Configure the environment variables (the default environment variable configuration file is "\~/.bashrc”):
 
 ```
 export MetaStorms=Path to Meta-Storms 2
