@@ -601,4 +601,4 @@ Any problem please contact MSE development team:
 
 ​	**JING Gongchao**	
 	
-	**Email:<jinggc@qibebt.ac.cn>**
+	Email: jinggc@qibebt.ac.cn
