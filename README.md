@@ -15,6 +15,12 @@
 - [Notice before use](#notice-before-use)
 - [Pre-computing](#pre-computing)
 - [Example dataset](#example-dataset)
+- [Build a MSE database](#)
+- [Search the MSE database](#)
+- [Multiple classification based on search result](#)
+- [Microbiome Novelty Score (MNS) based on search results](#)
+- [Microbiome Attention Score (MAS) based on search results](#)
+- [File Format](#file-formatsupplementary)
 
 ## Introduction
 
