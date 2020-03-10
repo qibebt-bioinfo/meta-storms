@@ -117,7 +117,7 @@ make
 
 1. For source code package based installation, please make sure proper versions of compilers have been installed: gcc 4.4 or higher for Linux / gcc-8 or higher for Mac OS X (refer to Software Requirements).
 
-2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)(version 3.2 or hihger) or [QIIME](http://qiime.org/) (version 1.9.1). Meta-Storms 2 software can also accept OTU tables (refer to[ **File format**](#file-formatsupplementary)). However, if starting from DNA sequences, [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)and [QIIME](http://qiime.org/) are the recommended software for converting amplicon sequences to OTU tables (refer to[ **Pre-computing**](#pre-computing)).
+2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html)(version 3.2 or hihger) or [QIIME](http://qiime.org/) (version 1.9.1). Meta-Storms 2 software can also accept OTU tables (refer to[ **File format**](#file-formatsupplementary)). However, if starting from DNA sequences, [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html)and [QIIME](http://qiime.org/) are the recommended software for converting amplicon sequences to OTU tables (refer to[ **Pre-computing**](#pre-computing)).
 
 3. Make sure that Meta-Storms 2 has the write permission in the output path.
 
@@ -125,7 +125,7 @@ make
 
 ## Pre-computing
 
-To use Meta-Storms, all sequences of microbiome samples must be pre-computed and profiled against the Greengenes database (version 13-8) by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)(version 3.2 or higher) or [QIIME](http://qiime.org/) (version 1.9.1). Then the profiling results will be used as input to Meta-Storms 2.
+To use Meta-Storms, all sequences of microbiome samples must be pre-computed and profiled against the Greengenes database (version 13-8) by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html)(version 3.2 or higher) or [QIIME](http://qiime.org/) (version 1.9.1). Then the profiling results will be used as input to Meta-Storms 2.
 
 ### Pre-computing by Parallel-META 3
 
