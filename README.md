@@ -147,7 +147,7 @@ Then the output file *sample1.out/classification.txt* is qualified as the input 
 
 ## Example dataset
 
-Here we provide a demo dataset with 20 human oral microbiome samples in two different healthy statuses from *Huang, et al., 2014**. The pre-computing result (in the [OTU table ](#otu-table)format and derived from Parallel-META 3 <http://bioinfo.single-cell.cn/parallel-meta.html>) and the meta-data are in the "[**example**](#example-dataset)” folder in the installation package. We use this dataset to demonstrate all the following example commands.
+Here we provide a demo dataset with 20 human oral microbiome samples in two different healthy statuses from *Huang, et al., 2014**. The pre-computing result (in the [OTU table ](#otu-table)format and derived from Parallel-META 3 and the meta-data are in the "[**example**](#example-dataset)” folder in the installation package. We use this dataset to demonstrate all the following example commands.
 
 Please change your work directory to the "**example**” folder by
 
@@ -280,7 +280,7 @@ Example: Here you can make another database named as "*database_2.mdb*"
 
 Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB- make-otu** (**.mdb*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
-The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in [Parallel-META 3]<http://bioinfo.single-cell.cn/parallel-meta.html> format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table ](#otu-table)(for OTU table format, by -T).
+The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in Parallel-META 3 format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table ](#otu-table)(for OTU table format, by -T).
 
 We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [**HDD mode**](#hdd-mode)).
 
