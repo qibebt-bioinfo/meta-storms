@@ -205,7 +205,7 @@ The command of **MetaDB-make-func** builds a new MSE database for Meta-Storms 2 
 	
 	[Other options]
 		-h Help
-Example (make sure you are in "[**example**](#)” path):
+Example (make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-make-func -T taxa.KO.Count -o database***
 
