@@ -159,7 +159,7 @@ Please change your work directory to the "**example**” folder by
 
 ### Build a MSE database by OTU
 
-The command of **MetaDB-make-otu** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* single sample list (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table ](#otu-table)(OTU table format, by -T). It outputs a database file (**.mdb*).
+The command of **MetaDB-make-otu** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [single sample list ](#single-sample-file-and-sample-list)(for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table ](#otu-table)(OTU table format, by -T). It outputs a database file (**.mdb*).
 
 **Usage:**
 
@@ -185,7 +185,7 @@ Example (make sure you are in "[**example**](#example-dataset)” path):
 
 ### Build a MSE database by function
 
-The command of **MetaDB-make-func** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* single sample list (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [KO table ](#ko-table)(KO table format, by -T). It outputs a database file (**.mdbf*).
+The command of **MetaDB-make-func** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [single sample list ](#single-sample-file-and-sample-list)(for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [KO table ](#ko-table)(KO table format, by -T). It outputs a database file (**.mdbf*).
 
 **Usage:**
 
@@ -211,7 +211,7 @@ Example (make sure you are in "[**example**](#)” path):
 
 ### Build a MSE database by species
 
-The command of **MetaDB-make-sp** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* single sample list (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table ](#otu-table)(OTU table format, by -T). It outputs a database file (**.mdbs*).
+The command of **MetaDB-make-sp** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [single sample list ](#single-sample-file-and-sample-list)(for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table ](#otu-table)(OTU table format, by -T). It outputs a database file (**.mdbs*).
 
 **Usage:**
 
@@ -280,7 +280,7 @@ Example: Here you can make another database named as "*database_2.mdb*"
 
 Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB- make-otu** (**.mdb*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
-The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in Parallel-META 3 format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table ](#otu-table)(for OTU table format, by -T).
+The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in Parallel-META 3 format, by -i), or (*ii*) [single sample list ](#single-sample-file-and-sample-list)(for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table ](#otu-table)(for OTU table format, by -T).
 
 We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [**HDD mode**](#hdd-mode)).
 
@@ -320,7 +320,7 @@ Example(make sure you are in "[**example**](#example-dataset)” path):
 
 Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB- make-func** (**.mdbf*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
-The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [KO table ](#ko-table)(for KO table format, by -T).
+The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) format, by -i), or (*ii*) [single sample list ](#single-sample-file-and-sample-list)(for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [KO table ](#ko-table)(for KO table format, by -T).
 
 We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [**HDD mode**](#hdd-mode)).
 
@@ -360,7 +360,7 @@ Example(make sure you are in "[**example**](#example-dataset)” path):
 
 Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) or [QIIME](http://qiime.org/)using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB- make-sp** (**.mdbs*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
-The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) format, by -i), or (*ii*) single sample list (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [species table ](#species-table)(for species table format, by -T).
+The query sample(s) can be provided via either (*i*) [single sample ](#single-sample-file-and-sample-list)(for a single sample in [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) format, by -i), or (*ii*) [single sample list ](#single-sample-file-and-sample-list)(for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [species table ](#species-table)(for species table format, by -T).
 
 We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [**HDD mode**](#hdd-mode)).
 
