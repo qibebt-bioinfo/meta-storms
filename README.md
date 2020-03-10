@@ -117,7 +117,7 @@ make
 
 1. For source code package based installation, please make sure proper versions of compilers have been installed: gcc 4.4 or higher for Linux / gcc-8 or higher for Mac OS X (refer to Software Requirements).
 
-2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)(version 3.2 or hihger) or [QIIME](http://qiime.org/) (version 1.9.1). Meta-Storms 2 software can also accept OTU tables (refer to[ **File format**](#file-formatsupplementary)). However, if starting from DNA sequences, [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html)and [QIIME](http://qiime.org/) are the recommended software for converting amplicon sequences to OTU tables (refer to [**Pre-computing**](#pre-computing)).
+2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html)(version 3.2 or hihger) or [QIIME](http://qiime.org/) (version 1.9.1). Meta-Storms 2 software can also accept OTU tables (refer to[ **File format**](#file-formatsupplementary)). However, if starting from DNA sequences, [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html) and [QIIME](http://qiime.org/) are the recommended software for converting amplicon sequences to OTU tables (refer to [**Pre-computing**](#pre-computing)).
 
 3. Make sure that Meta-Storms 2 has the write permission in the output path.
 
@@ -125,7 +125,7 @@ make
 
 ## Pre-computing
 
-To use Meta-Storms, all sequences of microbiome samples must be pre-computed and profiled against the Greengenes database (version 13-8) by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html)(version 3.2 or higher) or [QIIME](http://qiime.org/) (version 1.9.1). Then the profiling results will be used as input to Meta-Storms 2.
+To use Meta-Storms, all sequences of microbiome samples must be pre-computed and profiled against the Greengenes database (version 13-8) by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html) (version 3.2 or higher) or [QIIME](http://qiime.org/) (version 1.9.1). Then the profiling results will be used as input to Meta-Storms 2.
 
 ### Pre-computing by Parallel-META 3
 
@@ -143,11 +143,11 @@ For a give sequence file (FASTA format, eg. sample1.fa), to convert the sequence
 
 ​	***MetaDB-parse-qiime-otu -i sample1.out/sample1_otus.txt -o sample1.out/classification.txt***
 
-Then the output file *sample1.out/classification.txt* is qualified as the input for Meta-Storms 2 (refer to [**Single sample**](#single-sample-file-and-sample-list)**)**. For multiple samples as input, samples should be listed in the sample list (refer to [**Sample list**](#single-sample-file-and-sample-list)).
+Then the output file *sample1.out/classification.txt* is qualified as the input for Meta-Storms 2 (refer to [**Single sample**](#single-sample-file-and-sample-list)). For multiple samples as input, samples should be listed in the sample list (refer to [**Sample list**](#single-sample-file-and-sample-list)).
 
 ## Example dataset
 
-Here we provide a demo dataset with 20 human oral microbiome samples in two different healthy statuses from *Huang, et al., 2014**. The pre-computing result (in the [**OTU table**](#otu-table)format and derived from Parallel-META 3 and the meta-data are in the "[**example**](#example-dataset)” folder in the installation package. We use this dataset to demonstrate all the following example commands.
+Here we provide a demo dataset with 20 human oral microbiome samples in two different healthy statuses from *Huang, et al., 2014**. The pre-computing result (in the [**OTU table**](#otu-table) format and derived from Parallel-META 3 and the meta-data are in the "[**example**](#example-dataset)” folder in the installation package. We use this dataset to demonstrate all the following example commands.
 
 Please change your work directory to the "**example**” folder by
 
@@ -318,7 +318,7 @@ Example(make sure you are in "[**example**](#example-dataset)” path):
 
 ### Search via Meta-Storms 2 by function
 
-Query sample(s) should also be pre-computed by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB- make-func** (**.mdbf*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+Query sample(s) should also be pre-computed by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB- make-func** (**.mdbf*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
 The query sample(s) can be provided via either (*i*) [**single sample**](#single-sample-file-and-sample-list)(for a single sample in [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) format, by -i), or (*ii*) [**single sample list**](#single-sample-file-and-sample-list)(for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [**KO table**](#ko-table)(for KO table format, by -T).
 
@@ -358,7 +358,7 @@ Example(make sure you are in "[**example**](#example-dataset)” path):
 
 ### Search via Meta-Storms 2 by species
 
-Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) or [QIIME](http://qiime.org/)using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB-make-sp** (**.mdbs*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+Query sample(s) should also be pre-computed by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [**Pre-computing**](#pre-computing)). The database is built by **MetaDB-make-sp** (**.mdbs*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
 The query sample(s) can be provided via either (*i*) [**single sample**](#single-sample-file-and-sample-list)(for a single sample in [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) format, by -i), or (*ii*) [**single sample list**](#single-sample-file-and-sample-list)(for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [**species table**](#species-table)(for species table format, by -T).
 
@@ -398,7 +398,7 @@ Example(make sure you are in "[**example**](#example-dataset)” path):
 
 ### Search output
 
-[**MetaDB-search**](#search-the-mse-database)generates a number of matches, each with its sample ID and its similarity score (always between 0 and 1) to the query. In the output, for each of the query samples, all of its matches are listed in tandem in a single line, e.g.
+[**MetaDB-search**](#search-the-mse-database) generates a number of matches, each with its sample ID and its similarity score (always between 0 and 1) to the query. In the output, for each of the query samples, all of its matches are listed in tandem in a single line, e.g.
 
 | **#**      | **Query** | **Match** | **Similarity** | **Match** | **Similarity** |
 | ---------- | --------- | --------- | -------------- | --------- | -------------- |
