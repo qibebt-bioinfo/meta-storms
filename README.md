@@ -20,7 +20,8 @@
 - [Multiple classification based on search result](#multiple-classification-based-on-search-result)
 - [Microbiome Novelty Score (MNS) based on search results](#microbiome-novelty-score-mns-based-on-search-results)
 - [Microbiome Attention Score (MAS) based on search results](#microbiome-attention-score-mas-based-on-search-results)
-- [File Format](#file-formatsupplementary)
+- [File Format](#file-format)
+- [Supplementary](#supplementary)
 - [Contact](#contact)
 
 ## Introduction
@@ -486,7 +487,7 @@ Example (make sure you are in "[**example**](#example-dataset)” path):
 
 In the output above, the first query sample (q_id_0) reports a MAS of 25.05690.
 
-## File format(supplementary)
+## File format
 
 Meta-Storms 2 accepts the alternative two formats as input.
 
@@ -543,6 +544,12 @@ An species table is a plain-text file that contains the Species and their sequen
 | **Sample_3**   | 2         | 35        | 7         | 0         | 0         |
 | **Sample_4**   | 58        | 30        | 23        | 3         | 0         |
 | **Sample_5**   | 95        | 5         | 5         | 4         | 0         |
+
+## Supplementary
+
+The test code and datasets for reproducing the results of manuscript "Multiple-Disease Detection and Classification across Cohorts
+via Microbiome Search" is available here ([Linux X86_64](http://bioinfo.single-cell.cn/Released_Software/meta-storms/test_package/test_package_linux.tar.gz) / [Mac OS X](http://bioinfo.single-cell.cn/Released_Software/meta-storms/test_package/test_package_mac.tar.gz), ~ 892 MB). See “Readme.txt” in the package for usage and details.
+
 ## Contact
 
 Any problem please contact MSE development team:
