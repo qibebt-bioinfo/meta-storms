@@ -20,7 +20,7 @@
 - [Multiple classification based on search result](#multiple-classification-based-on-search-result)
 - [Microbiome Novelty Score (MNS) based on search results](#microbiome-novelty-score-mns-based-on-search-results)
 - [Microbiome Attention Score (MAS) based on search results](#microbiome-attention-score-mas-based-on-search-results)
-- [File Format](#file-format)ac
+- [File Format](#file-format)
 - [Supplementary](#supplementary)
 - [Contact](#contact)
 
