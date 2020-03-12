@@ -17,9 +17,9 @@
 - [Search the MSE database](#search-the-mse-database)
 - [Multiple classification based on search result](#multiple-classification-based-on-search-result)
 - [Microbiome Novelty Score (MNS) based on search results](#microbiome-novelty-score-mns-based-on-search-results)
-- [Microbiome Attention Score (MAS) based on search results](#microbiome-attention-score-mas-based-on-search-results)
 - [File Format](#file-format)
 - [Supplementary](#supplementary)
+- [Citation](#citation)
 - [Contact](#contact)
 
 ## Introduction
@@ -141,7 +141,7 @@ sh Readme
 
 ## Build a MSE database
 
-The command "MetaDB-make-otu" builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [single sample list](#single-sample-file-and-sample-list) (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table](#otu-table) (OTU table format, by -T). It outputs a database file (**.mdb*).
+The command "MetaDB-make-otu" builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [single sample list](#single-sample-file-and-sample-list) (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table](#otu-table) (OTU table format, by -T). It outputs a database file (*.mdb).
 
 **Usage:**
 ```
@@ -172,9 +172,9 @@ You can also build a MSE database by species (MetaDB-make-sp) or function (MetaD
 
 ### HDD mode
 
-The HDD (Hard Drive Disk) mode uses the re-encoding technique to minimize the RAM usage for database search (although the mode is slower). When the HDD mode is enabled via –H t, **MetaDB-make-out/func/sp** will generate accessory data named as **.mdb.hdd* under the same directory of the output database (**.mdb*). For extremely large databases (e.g., sample number > 10,000), we strongly recommend users to enable the HDD mode to minimize the RAM consumption.*
+The HDD (Hard Drive Disk) mode uses the re-encoding technique to minimize the RAM usage for database search (although the mode is slower). When the HDD mode is enabled via –H t, **MetaDB-make-out/func/sp** will generate accessory data named as *.mdb.hdd under the same directory of the output database (*.mdb). For extremely large databases (e.g., sample number > 10,000), we strongly recommend users to enable the HDD mode to minimize the RAM consumption.*
 
-For an existing database (**.mdb*), HDD mode can also be enabled by making its HDD files via the command below. Then the **.mdb.hdd* would be generated and stored under the same directory as the database.
+For an existing database (*.mdb), HDD mode can also be enabled by making its HDD files via the command below. Then the *.mdb.hdd would be generated and stored under the same directory as the database.
 
 Example (make sure you are in "[example](#example-dataset)" path):
 ```
@@ -183,7 +183,7 @@ MetaDB-make-otu -d database.mdb
 
 ### Merge MSE databases
 
-The command "MetaDB-merge" merges two existing databases (**.mdb*) into one.
+The command "MetaDB-merge" merges two existing databases (*.mdb) into one.
 **Usage:**
 
 ```
@@ -198,7 +198,7 @@ MetaDB-merge [-option] value
 	-h Help
 ```
 
-Example: Here you can make another database named as "*database_2.mdb*"
+Example: Here you can make another database named as "*database_2.mdb"
 
 ```
 MetaDB-merge -1 database.mdb -2 database_2.mbd -o database_merged
@@ -208,7 +208,7 @@ MetaDB-merge -1 database.mdb -2 database_2.mbd -o database_merged
 
 ### Search via Meta-Storms 2 by OTU
 
-Query sample(s) should also be pre-computed by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [Pre-computing](#pre-computing)). The database is built by **MetaDB-make-otu** (**.mdb*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+Query sample(s) should also be pre-computed by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [Pre-computing](#pre-computing)). The database is built by **MetaDB-make-otu** (*.mdb). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
 The query sample(s) can be provided via either (*i*) [single sample](#single-sample-file-and-sample-list) (for a single sample in Parallel-META 3 format, by -i), or (*ii*) [single sample list](#single-sample-file-and-sample-list) (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table](#otu-table) (for OTU table format, by -T).
 
@@ -349,49 +349,6 @@ MetaDB-parse-mns -i query.out -o query.out.mns
 
 In the output above, the first query sample (q_id_0) reports a MNS of 0.06.
 
-## Microbiome Attention Score (MAS) based on search results
-
-### Calculate the Microbiome Attention Score (MAS)
-
-With the search output generated by [MetaDB-search](#search-the-mse-database), the Microbiome Attention Score (MAS) of each sample can be calculated by:
-
-**Usage:**
-```
-	MetaDB-parse-mas [Options] Value
-	
-	[Input and Output options]
-		-i Input file name (the output of MetaDB-search) [Required]
-		-o Output file name, default is "query.out.mas"
-	
-	[Advanced options]
-		-b Base of the similarity in the input file, default is 0
-		-n Max number of matches in the input file, default is 10
-		-s Number of skipped matches in the input file, default is 0
-		-m Input Meta-data file name to eliminate dup-bias [Optional]
-		-l Meta-data column, default is 1 (exclude the ID column) [for -m]
-	
-	[Other options]
-		-h Help
-```
-Usage for the -s:
-
-When the query sample has already been included in the database, the search result must contain the query samples itself as the top hit since they have the 100% similarity, which causes bias in calculating the MAS. Here we can use the parameter –s 1 to exclude this top hit in calculating the MAS.
-
-Example (make sure you are in "[example](#example-dataset)" path):
-```
-MetaDB-parse-mas -i query.out -o query.out.mas
-```
-### Microbiome Attention Score (MAS) output
-
-[MetaDB-parse-mas](#microbiome-attention-score-mas-based-on-search-results) generates the MAS of each query sample in a single line, e.g.
-
-| **#ID**| **MAS**  |
-| -------| -------- |
-| q_id_0 | 25.05690 |
-| q_id_1 | 17.95170 |
-
-In the output above, the first query sample (q_id_0) reports a MAS of 25.05690.
-
 ## File format
 
 Meta-Storms 2 accepts the alternative two formats as input.
@@ -450,15 +407,15 @@ An species table is a plain-text file that contains the Species and their sequen
 | Sample_4   | 58        | 30        | 23        | 3         | 0         |
 | Sample_5   | 95        | 5         | 5         | 4         | 0         |
 
-The output file format can be found [Search output](#search-output).
+The output file format can be found at [Search output](#search-output).
 
 ## Supplementary
 
 The test code and datasets for reproducing the results of manuscript "Multiple-Disease Detection and Classification across Cohorts
 via Microbiome Search" is available here ([Linux X86_64](http://bioinfo.single-cell.cn/Released_Software/meta-storms/test_package/test_package_linux.tar.gz) / [Mac OS X](http://bioinfo.single-cell.cn/Released_Software/meta-storms/test_package/test_package_mac.tar.gz), ~ 892 MB). See “Readme.txt" in the package for usage and details.
 
-## 
-
+## Citation
+X. Su*, G. Jing, D. McDonald, H. Wang, Z. Wang, A. Gonzalez, Z. Sun, S. Huang, J. Navas, R. Knight* and J. Xu*. Identifying and predicting novelty in microbiome studies, *mBio*, 2018.
 ## Contact
 
 Any problem please contact MSE development team:
