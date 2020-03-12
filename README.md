@@ -8,8 +8,6 @@
 ## Contents
 
 - [Introduction](#introduction)
-- [Download](#download)
-- [Packages](#packages)
 - [System Requirement and dependency](#system-requirement-and-dependency)
 - [Installation guide](#installation-guide)
 - [Notice before use](#notice-before-use)
@@ -458,6 +456,8 @@ The output file format can be found [Search output](#search-output).
 
 The test code and datasets for reproducing the results of manuscript "Multiple-Disease Detection and Classification across Cohorts
 via Microbiome Search" is available here ([Linux X86_64](http://bioinfo.single-cell.cn/Released_Software/meta-storms/test_package/test_package_linux.tar.gz) / [Mac OS X](http://bioinfo.single-cell.cn/Released_Software/meta-storms/test_package/test_package_mac.tar.gz), ~ 892 MB). See “Readme.txt" in the package for usage and details.
+
+## 
 
 ## Contact
 
