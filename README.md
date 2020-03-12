@@ -121,8 +121,7 @@ Then the output file "sample1.out/classification.txt" is qualified as the input 
 ### Pre-computing by QIIME
 
 For a give sequence file (FASTA format, eg. sample1.fa), to convert the sequences to OTUs by [QIIME](http://qiime.org/):
-
-​```
+```
 pick_otus.py -m uclust_ref --suppress_new_clusters -i sample1.fa -o sample1.out
 MetaDB-parse-qiime-otu -i sample1.out/sample1_otus.txt -o sample1.out/classification.txt
 ```
@@ -145,9 +144,9 @@ sh Readme
 ## Build a MSE database
 
 The command of **MetaDB-make-otu** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [**single sample list**](#single-sample-file-and-sample-list) (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [**OTU table**](#otu-table) (OTU table format, by -T). It outputs a database file (**.mdb*).
-```
-**Usage:**
 
+**Usage:**
+```
 	MetaDB-make-otu [-option] value
 	
 	[Input options]
@@ -166,7 +165,7 @@ The command of **MetaDB-make-otu** builds a new MSE database for Meta-Storms 2 b
 		-h Help
 ```
 
-Example (make sure you are in "[**example**](#example-dataset)” path):
+Example (make sure you are in "[example](#example-dataset)” path):
 ```
 MetaDB-make-otu -T taxa.OTU.Count -o database
 ```
