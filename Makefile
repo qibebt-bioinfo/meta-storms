@@ -1,8 +1,17 @@
-CC=g++
-HASHLIB=-Wno-deprecated
-BUILDFLG=-ffunction-sections -fdata-sections -fmodulo-sched -msse
+CC:=g++
+ifneq (,$(findstring Darwin,$(shell uname)))
+	exist = $(shell if [ -e '/usr/local/bin/g++-9' ]; then echo "exist"; else echo "notexist"; fi;)
+	ifeq ($(exist),exist)
+		CC:=g++-9
+	else
+		CC:=g++-8
+	endif
+endif
 OMP=-fopenmp
+HASHFLG=-Wno-deprecated
+BUILDFLG=-w -ffunction-sections -fdata-sections -fmodulo-sched -msse
 MYSQL=`mysql_config --cflags --libs`
+
 EXE_DMK_OTU=bin/MetaDB-make-otu
 EXE_DSC_OTU=bin/MetaDB-search-otu
 EXE_DMK_FUNC=bin/MetaDB-make-func
