@@ -99,7 +99,7 @@ make
 
 1. For source code package based installation, please make sure proper versions of compilers have been installed: gcc 4.4 or higher for Linux / gcc-8 or higher for Mac OS X (refer to Software Requirements).
 
-2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) (version 3.2 or hihger) or [QIIME](http://qiime.org/) (version 1.9.1). Meta-Storms 2 software can also accept OTU tables (refer to [File format](#file-format)). However, if starting from DNA sequences, [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html) and [QIIME](http://qiime.org/) are the recommended software for converting amplicon sequences to OTU tables (refer to [Pre-computing](#pre-computing)).
+2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by [Parallel-META 3 ](https://github.com/qibebt-bioinfo/parallel-meta) (version 3.2 or hihger) or [QIIME](http://qiime.org/) (version 1.9.1). Meta-Storms 2 software can also accept OTU tables (refer to [File format](#file-format)). However, if starting from DNA sequences, [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) and [QIIME](http://qiime.org/) are the recommended software for converting amplicon sequences to OTU tables (refer to [Pre-computing](#pre-computing)).
 
 3. Make sure that Meta-Storms 2 has the write permission in the output path.
 
@@ -107,11 +107,11 @@ make
 
 ## Pre-computing
 
-To use Meta-Storms 2, all sequences of microbiome samples must be pre-computed and profiled against the Greengenes database (version 13-8) by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html) (version 3.2 or higher) or [QIIME](http://qiime.org/) (version 1.9.1). Then the profiling results will be used as input to Meta-Storms 2.
+To use Meta-Storms 2, all sequences of microbiome samples must be pre-computed and profiled against the Greengenes database (version 13-8) by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) (version 3.2 or higher) or [QIIME](http://qiime.org/) (version 1.9.1). Then the profiling results will be used as input to Meta-Storms 2.
 
 ### Pre-computing by Parallel-META 3
 
-For a give sequence file (FASTA or FASTQ format, eg. sample1.fa), to convert the sequences to OTUs by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html):
+For a give sequence file (FASTA or FASTQ format, eg. sample1.fa), to convert the sequences to OTUs by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta):
 ```
 PM-parallel-meta -f F -r sample1.fa -o sample1.out
 ```
@@ -210,7 +210,7 @@ MetaDB-merge -1 database.mdb -2 database_2.mbd -o database_merged
 
 ### Search via Meta-Storms 2 by OTU
 
-Query sample(s) should also be pre-computed by [Parallel-META 3 ](http://bioinfo.single-cell.cn/parallel-meta.html) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [Pre-computing](#pre-computing)). The database is built by **MetaDB-make-otu** (**.mdb*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+Query sample(s) should also be pre-computed by [Parallel-META 3 ](https://github.com/qibebt-bioinfo/parallel-meta) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [Pre-computing](#pre-computing)). The database is built by **MetaDB-make-otu** (**.mdb*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
 The query sample(s) can be provided via either (*i*) [single sample](#single-sample-file-and-sample-list) (for a single sample in Parallel-META 3 format, by -i), or (*ii*) [single sample list ](#single-sample-file-and-sample-list) (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table](#otu-table) (for OTU table format, by -T).
 
@@ -399,7 +399,7 @@ Meta-Storms 2 accepts the alternative two formats as input.
 
 ### Single sample file and sample list
 
-A single sample is the OTUs and taxonomy information of a single microbiome sample profiled by [Parallel-META 3](http://bioinfo.single-cell.cn/parallel-meta.html)or [QIIME](http://qiime.org/)from the amplicon sequences (refer to [Pre-computing](#pre-computing) for details). It is a plain-text file, normally named as "*classification.txt*". An example of the single sample is below:
+A single sample is the OTUs and taxonomy information of a single microbiome sample profiled by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta)or [QIIME](http://qiime.org/)from the amplicon sequences (refer to [Pre-computing](#pre-computing) for details). It is a plain-text file, normally named as "*classification.txt*". An example of the single sample is below:
 
 | **#Database_OTU** | **Count** |
 | ----------------- | --------- |
@@ -460,4 +460,4 @@ via Microbiome Search" is available here ([Linux X86_64](http://bioinfo.single-c
 
 Any problem please contact MSE development team:
 
-​	**JING Gongchao**&nbsp;&nbsp;&nbsp;&nbsp;Email: jinggc@qibebt.ac.cn
+**JING Gongchao**&nbsp;&nbsp;&nbsp;&nbsp;Email: jinggc@qibebt.ac.cn
