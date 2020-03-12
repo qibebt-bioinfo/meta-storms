@@ -1,7 +1,7 @@
 # Meta-Storms 2
 
 ![Version](https://img.shields.io/badge/Version-std%202.2.1-brightgreen.svg)
-![Release date](https://img.shields.io/badge/Release%20date-Jan.%204%2C%202019-brightgreen.svg)
+![Release date](https://img.shields.io/badge/Release%20date-Feb.%204%2C%202020-brightgreen.svg)
 
 
 
