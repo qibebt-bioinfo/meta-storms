@@ -170,7 +170,7 @@ Example (make sure you are in "[example](#example-dataset)" path):
 MetaDB-make-otu -T taxa.OTU.Count -o database
 ```
 
-You can also build a MSE database by function (MetaDB-make-func) or species (MetaDB-make-sp).
+You can also build a MSE database by species (MetaDB-make-sp) or function (MetaDB-make-func) .
 
 ### HDD mode
 
@@ -206,7 +206,7 @@ Example: Here you can make another database named as "*database_2.mdb*"
 MetaDB-merge -1 database.mdb -2 database_2.mbd -o database_merged
 ```
 
-## **Search the MSE database**
+## Search the MSE database
 
 ### Search via Meta-Storms 2 by OTU
 
@@ -252,12 +252,12 @@ MetaDB-search-otu -d database.mdb -T taxa.OTU.Count -o query.out
 
 ### Search output
 
-[MetaDB-search-*](#search-the-mse-database) generates a number of matches, each with its sample ID and its similarity score (always between 0 and 1) to the query. In the output, for each of the query samples, all of its matches are listed in tandem in a single line, e.g.
+[MetaDB-search-otu](#search-the-mse-database) generates a number of matches, each with its sample ID and its similarity score (always between 0 and 1) to the query. In the output, for each of the query samples, all of its matches are listed in tandem in a single line, e.g.
 
 | **#**      | **Query** | **Match** | **Similarity** | **Match** | **Similarity** |
 | ---------- | --------- | --------- | -------------- | --------- | -------------- |
-| **Query:** | q_id_0    | ref_id_x  | 0.9823         | ref_id_y  | 0.9758         |
-| **Query:** | q_id_1    | Ref_id_m  | 0.9541         | ref_id_n  | 0.9386         |
+| Query: | q_id_0    | ref_id_x  | 0.9823         | ref_id_y  | 0.9758         |
+| Query: | q_id_1    | Ref_id_m  | 0.9541         | ref_id_n  | 0.9386         |
 
 In the output above, the first query sample (q_id_0) matches against the reference sample (ref_id_x) with a similarity of 0.9823. In addition, q_id_0 also matches ref_id_v with a similarity of 0.9758. The number of matches is assigned by the parameter -n, and default is 10.
 
@@ -301,8 +301,8 @@ MetaDB-parse-meta -i query.out -m meta.txt -o query.out.meta
 
 | **#ID**    | **Meta-data** | **Score** | **Meta-data** | **Score** |
 | ---------- | ------------- | --------- | ------------- | --------- |
-| **q_id_0** | Healthy       | 0.75      | Disease       | 0.25      |
-| **q_id_1** | Disease       | 0.72      | Healthy       | 0.28      |
+| q_id_0 | Healthy       | 0.75      | Disease       | 0.25      |
+| q_id_1 | Disease       | 0.72      | Healthy       | 0.28      |
 
 In the output above, the first query sample (q_id_0) is predicted as "Healthy" with a score of 0.75, and "Disease" with a score of 0.25. The predicted meta-data are sorted by their scores.                              
 
@@ -335,7 +335,7 @@ When the query sample has already been included in the database, the search resu
 
 Example (make sure you are in "[example](#example-dataset)" path):
 ```
-​MetaDB-parse-mns -i query.out -o query.out.mns
+MetaDB-parse-mns -i query.out -o query.out.mns
 ```
 ### Microbiome Novelty Score (MNS) output
 
@@ -343,8 +343,8 @@ Example (make sure you are in "[example](#example-dataset)" path):
 
 | **#ID**    | **MNS** |
 | ---------- | ------- |
-| **q_id_0** | 0.06    |
-| **q_id_1** | 0.12    |
+| q_id_0 | 0.06    |
+| q_id_1 | 0.12    |
 
  
 
@@ -386,10 +386,10 @@ MetaDB-parse-mas -i query.out -o query.out.mas
 
 [MetaDB-parse-mas](#microbiome-attention-score-mas-based-on-search-results)generates the MAS of each query sample in a single line, e.g.
 
-| **#ID**    | **MAS**  |
-| ---------- | -------- |
-| **q_id_0** | 25.05690 |
-| **q_id_1** | 17.95170 |
+| **#ID**| **MAS**  |
+| -------| -------- |
+| q_id_0 | 25.05690 |
+| q_id_1 | 17.95170 |
 
 In the output above, the first query sample (q_id_0) reports a MAS of 25.05690.
 
@@ -407,11 +407,11 @@ A single sample is the OTUs and taxonomy information of a single microbiome samp
 | OTU_2             | 17        |
 | OTU_3             | 38        |
 
-A sample list is a plain-text file for listing multiple samples (by –l) as Meta-Storms 2 input, which consists of two columns: the sample IDs and the directories of samples’ "classification.txt" files, e.g. 
+A sample list is a plain-text file for listing multiple samples (by –l) as Meta-Storms 2 input, which consists of two columns: the sample IDs and the directories of samples "classification.txt" files, e.g. 
 
-| **Sample_1** | /home/data/single_sample/Sample_2/classification.txt |
-| ------------ | ---------------------------------------------------- |
-| **Sample_2** | /home/data/single_sample/Sample_2/classification.txt |
+| Sample_1 | /home/data/single_sample/Sample_2/classification.txt |
+| -------- | ---------------------------------------------------- |
+| Sample_2 | /home/data/single_sample/Sample_2/classification.txt |
 
 The directory can be either absolute directory or relative directory. Meta-Storms 2 also provides an optional parameter –p to add a prefix for the all the directories in the sample list in case of a relative directory is preferred.
 
@@ -420,12 +420,12 @@ The directory can be either absolute directory or relative directory. Meta-Storm
 An OTU table is a plain-text file that contains the OTUs and their sequence numbers for each of multiple samples. An example of the OTU table is bellow
 
 | **#Sample_ID** | **OTU_1** | **OTU_2** | **OTU_3** | **OTU_4** | **OTU_5** |
-| -------------- | --------- | --------- | --------- | --------- | --------- |
-| **Sample_1**   | 10        | 17        | 38        | 2         | 2         |
-| **Sample_2**   | 0         | 5         | 57        | 0         | 0         |
-| **Sample_3**   | 2         | 35        | 7         | 0         | 0         |
-| **Sample_4**   | 58        | 30        | 23        | 3         | 0         |
-| **Sample_5**   | 95        | 5         | 5         | 4         | 0         |
+| -----------| --------- | --------- | --------- | --------- | --------- |
+| Sample_1   | 10        | 17        | 38        | 2         | 2         |
+| Sample_2   | 0         | 5         | 57        | 0         | 0         |
+| Sample_3   | 2         | 35        | 7         | 0         | 0         |
+| Sample_4   | 58        | 30        | 23        | 3         | 0         |
+| Sample_5   | 95        | 5         | 5         | 4         | 0         |
 
 ### KO table
 
@@ -433,11 +433,11 @@ An KO table is a plain-text file that contains the KOs and their sequence number
 
 | **#Sample_ID** | **KO_1** | **KO_2** | **KO_3** | **KO_4** | **KO_5** |
 | -------------- | --------- | --------- | --------- | --------- | --------- |
-| **Sample_1**   | 10        | 17        | 38        | 2         | 2         |
-| **Sample_2**   | 0         | 5         | 57        | 0         | 0         |
-| **Sample_3**   | 2         | 35        | 7         | 0         | 0         |
-| **Sample_4**   | 58        | 30        | 23        | 3         | 0         |
-| **Sample_5**   | 95        | 5         | 5         | 4         | 0         |
+| Sample_1   | 10        | 17        | 38        | 2         | 2         |
+| Sample_2   | 0         | 5         | 57        | 0         | 0         |
+| Sample_3   | 2         | 35        | 7         | 0         | 0         |
+| Sample_4   | 58        | 30        | 23        | 3         | 0         |
+| Sample_5   | 95        | 5         | 5         | 4         | 0         |
 
 ### Species table
 
@@ -445,11 +445,11 @@ An species table is a plain-text file that contains the Species and their sequen
 
 | **#Sample_ID** | **sp_1** | **sp_2** | **sp_3** | **sp_4** | **sp_5** |
 | -------------- | --------- | --------- | --------- | --------- | --------- |
-| **Sample_1**   | 10        | 17        | 38        | 2         | 2         |
-| **Sample_2**   | 0         | 5         | 57        | 0         | 0         |
-| **Sample_3**   | 2         | 35        | 7         | 0         | 0         |
-| **Sample_4**   | 58        | 30        | 23        | 3         | 0         |
-| **Sample_5**   | 95        | 5         | 5         | 4         | 0         |
+| Sample_1   | 10        | 17        | 38        | 2         | 2         |
+| Sample_2   | 0         | 5         | 57        | 0         | 0         |
+| Sample_3   | 2         | 35        | 7         | 0         | 0         |
+| Sample_4   | 58        | 30        | 23        | 3         | 0         |
+| Sample_5   | 95        | 5         | 5         | 4         | 0         |
 
 ## Supplementary
 
