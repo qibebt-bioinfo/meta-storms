@@ -183,57 +183,7 @@ Example (make sure you are in "[**example**](#example-dataset)” path):
 
 ​	***MetaDB-make-otu -T taxa.OTU.Count -o database***
 
-### Build a MSE database by function
-
-The command of **MetaDB-make-func** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [**single sample list**](#single-sample-file-and-sample-list) (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [**KO table**](#ko-table) (KO table format, by -T). It outputs a database file (**.mdbf*).
-
-**Usage:**
-
-	MetaDB-make-func [Options] Value
-	
-	[Input options]
-		-i or -l Input filename list
-		-p List file path prefix for '-i' or '-l' [Optional for -i and -l]
-	or
-		-T (upper) Input KO table (*.KO.Count)
-	or
-		-d (*.mdbf) Make the HDD mode data files for a database
-	
-	[Output options]
-		-o Output database name, default is "database.mdbf"
-		-H (upper) If enable the HDD mode (low RAM usage), T(rue) or F(alse), default is F
-	
-	[Other options]
-		-h Help
-Example (make sure you are in "[**example**](#example-dataset)” path):
-
-​	***MetaDB-make-func -T taxa.KO.Count -o database***
-
-### Build a MSE database by species
-
-The command of **MetaDB-make-sp** builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [**single sample list**](#single-sample-file-and-sample-list) (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [**OTU table**](#otu-table) (OTU table format, by -T). It outputs a database file (**.mdbs*).
-
-**Usage:**
-
-	MetaDB-make-sp [Options] Value
-	
-	[Input options]
-		-i or -l Input filename list
-		-p List file path prefix for '-i' or '-l' [Optional for -i and -l]
-	or
-	  	-T (upper) Input OTU table (*.OTU.Count)
-	or
-	  	-d (*.mdbs) Make the HDD mode data files for a database
-	
-	[Output options]
-	  	-o Output database name, default is "database.mdbs"
-	  	-H (upper) If enable the HDD mode (low RAM usage), T(rue) or F(alse), default is F
-	
-	[Other options]
-	  	-h Help
-Example (make sure you are in "[**example**](#example-dataset)” path):
-
-​	***MetaDB-make-sp -T taxa.OTU.Count -o database***
+You can also build a MSE database by function (**MetaDB-make-func**) or species (**MetaDB-make-sp**).
 
 #### HDD mode
 
@@ -254,8 +204,6 @@ Example (make sure you are in "[**example**](#example-dataset)” path):
 The command of **MetaDB-merge** merges two existing databases (**.mdb*) into one.
 
 **Usage:**
-
-​		
 
 ```
 MetaDB-merge [-option] value
