@@ -99,7 +99,7 @@ make
 
 1. For source code package based installation, please make sure proper versions of compilers have been installed: gcc 4.4 or higher for Linux / gcc-8 or higher for Mac OS X (refer to Software Requirements).
 
-2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by [Parallel-META 3 ](https://github.com/qibebt-bioinfo/parallel-meta) (version 3.2 or hihger) or [QIIME](http://qiime.org/) (version 1.9.1). Meta-Storms 2 software can also accept OTU tables (refer to [File format](#file-format)). However, if starting from DNA sequences, [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) and [QIIME](http://qiime.org/) are the recommended software for converting amplicon sequences to OTU tables (refer to [Pre-computing](#pre-computing)).
+2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) (version 3.2 or hihger) or [QIIME](http://qiime.org/) (version 1.9.1). Meta-Storms 2 software can also accept OTU tables (refer to [File format](#file-format)). However, if starting from DNA sequences, [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) and [QIIME](http://qiime.org/) are the recommended software for converting amplicon sequences to OTU tables (refer to [Pre-computing](#pre-computing)).
 
 3. Make sure that Meta-Storms 2 has the write permission in the output path.
 
@@ -210,9 +210,9 @@ MetaDB-merge -1 database.mdb -2 database_2.mbd -o database_merged
 
 ### Search via Meta-Storms 2 by OTU
 
-Query sample(s) should also be pre-computed by [Parallel-META 3 ](https://github.com/qibebt-bioinfo/parallel-meta) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [Pre-computing](#pre-computing)). The database is built by **MetaDB-make-otu** (**.mdb*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+Query sample(s) should also be pre-computed by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [Pre-computing](#pre-computing)). The database is built by **MetaDB-make-otu** (**.mdb*). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
-The query sample(s) can be provided via either (*i*) [single sample](#single-sample-file-and-sample-list) (for a single sample in Parallel-META 3 format, by -i), or (*ii*) [single sample list ](#single-sample-file-and-sample-list) (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table](#otu-table) (for OTU table format, by -T).
+The query sample(s) can be provided via either (*i*) [single sample](#single-sample-file-and-sample-list) (for a single sample in Parallel-META 3 format, by -i), or (*ii*) [single sample list](#single-sample-file-and-sample-list) (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table](#otu-table) (for OTU table format, by -T).
 
 We also recommend users to enable the HDD mode for large databases to minimize the RAM consumption (e.g., sample number > 10,000) (See [HDD mode](#hdd-mode)).
 
@@ -297,7 +297,7 @@ MetaDB-parse-meta -i query.out -m meta.txt -o query.out.meta
 ```
 ### Multiple classification output
 
-[MetaDB-parse-meta](#meta-data-prediction)generates the predicted meta-data with the assigned scores (always between 0 and 1). In the output, for each of the query samples, all of its predicted meta-data are listed in tandem in a single line, e.g.
+[MetaDB-parse-meta](#meta-data-prediction) generates the predicted meta-data with the assigned scores (always between 0 and 1). In the output, for each of the query samples, all of its predicted meta-data are listed in tandem in a single line, e.g.
 
 | **#ID**    | **Meta-data** | **Score** | **Meta-data** | **Score** |
 | ---------- | ------------- | --------- | ------------- | --------- |
@@ -339,7 +339,7 @@ MetaDB-parse-mns -i query.out -o query.out.mns
 ```
 ### Microbiome Novelty Score (MNS) output
 
-[MetaDB-parse-mns](#microbiome-novelty-score-mns-based-on-search-results)generates the MNS (always between 0 and 1) of each query sample in a single line, e.g.
+[MetaDB-parse-mns](#microbiome-novelty-score-mns-based-on-search-results) generates the MNS (always between 0 and 1) of each query sample in a single line, e.g.
 
 | **#ID**    | **MNS** |
 | ---------- | ------- |
@@ -384,7 +384,7 @@ MetaDB-parse-mas -i query.out -o query.out.mas
 ```
 ### Microbiome Attention Score (MAS) output
 
-[MetaDB-parse-mas](#microbiome-attention-score-mas-based-on-search-results)generates the MAS of each query sample in a single line, e.g.
+[MetaDB-parse-mas](#microbiome-attention-score-mas-based-on-search-results) generates the MAS of each query sample in a single line, e.g.
 
 | **#ID**| **MAS**  |
 | -------| -------- |
@@ -450,6 +450,8 @@ An species table is a plain-text file that contains the Species and their sequen
 | Sample_3   | 2         | 35        | 7         | 0         | 0         |
 | Sample_4   | 58        | 30        | 23        | 3         | 0         |
 | Sample_5   | 95        | 5         | 5         | 4         | 0         |
+
+The output file format can be found [Search output](#search-output).
 
 ## Supplementary
 
