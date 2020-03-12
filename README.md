@@ -250,6 +250,7 @@ Example(make sure you are in "[example](#example-dataset)" path):
 MetaDB-search-otu -d database.mdb -T taxa.OTU.Count -o query.out
 ```
 
+Meta-Storms 2 also supports search by species or function with the commands "MetaDB-search-sp" and "MetaDB-search-func". 
 ### Search output
 
 [MetaDB-search-otu](#search-the-mse-database) generates a number of matches, each with its sample ID and its similarity score (always between 0 and 1) to the query. In the output, for each of the query samples, all of its matches are listed in tandem in a single line, e.g.
