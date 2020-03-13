@@ -96,8 +96,6 @@ make
 
 Meta-Storms 2 accepts microbiome samples profiled into OTUs (for 16S) or species (for shotgun) or KEGG Orthologies (KO, for both 16S and shotgun).
 
-To use Meta-Storms 2, all sequences of microbiome samples must be pre-computed and profiled against the Greengenes database (version 13-8) by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) (version 3.2 or higher) or [QIIME](http://qiime.org/) (version 1.9.1). Then the profiling results will be used as input to Meta-Storms 2.
-
 ### OTU (for 16S sequences)
 
 16S rRNA amplicon sequences can be picked into OTUs against GreenGenes 13-8 (97% level) reference by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) (recommended) or [QIIME](http://qiime.org/). For a give sequence file (FASTA or FASTQ format, eg. sample1.fa), OTUs can be profiled from 16S sequences in the three alternative methods:
