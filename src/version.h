@@ -8,6 +8,6 @@
 #ifndef _VERSION_H
 #define _VERSION_H
 
-#define Version "2.3Beta"
+#define Version "2.3 Beta"
 
 #endif
