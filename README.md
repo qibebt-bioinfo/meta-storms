@@ -172,7 +172,7 @@ You can also build a MSE database by species (MetaDB-make-sp) or function (MetaD
 
 ### HDD mode
 
-The HDD (Hard Drive Disk) mode uses the re-encoding technique to minimize the RAM usage for database search (although the mode is slower). When the HDD mode is enabled via –H t, **MetaDB-make-otu/func/sp** will generate accessory data named as *.mdb.hdd under the same directory of the output database (*.mdb). For extremely large databases (e.g., sample number > 10,000), we strongly recommend users to enable the HDD mode to minimize the RAM consumption.*
+The HDD (Hard Drive Disk) mode uses the re-encoding technique to minimize the RAM usage for database search (although the mode is slower). When the HDD mode is enabled via "–H t", **MetaDB-make-otu/func/sp** will generate accessory data named as \*.mdb.hdd under the same directory of the output database (\*.mdb). For extremely large databases (e.g., sample number > 10,000), we strongly recommend users to enable the HDD mode to minimize the RAM consumption.
 
 For an existing database (*.mdb), HDD mode can also be enabled by making its HDD files via the command below. Then the *.mdb.hdd would be generated and stored under the same directory as the database.
 
