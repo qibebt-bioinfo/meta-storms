@@ -212,7 +212,7 @@ MetaDB-merge [-option] value
 	-h Help
 ```
 
-Example: Here you can make another database named as "*database_2.mdb"
+Example: Here you can make another database named as "database_2.mdb"
 
 ```
 MetaDB-merge -1 database.mdb -2 database_2.mbd -o database_merged
@@ -222,7 +222,7 @@ MetaDB-merge -1 database.mdb -2 database_2.mbd -o database_merged
 
 ### Search via Meta-Storms 2
 
-The database is built by [MetaDB-make-otu/sp/func](#build-a-mse-database) (\*.mdb/\*.mdbs/\*.mdbf). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+The database is built by [MetaDB-make-otu](#build-a-mse-database) (\*.mdb). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
 The query sample(s) can be provided via either (*i*) [single sample](#single-sample-file-and-sample-list) (for a single sample in Parallel-META 3 format, by -i), or (*ii*) [single sample list](#single-sample-file-and-sample-list) (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table](#otu-table) (for OTU table format, by -T).
 
