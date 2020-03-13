@@ -121,7 +121,7 @@ Then the output file "sample1.out/classification.txt" is qualified as the input 
 c. by QIIME2: integrate Meta-Storms2 as [QIIME2-plug-in](https://github.com/qibebt-bioinfo/q2-metastorms.git).
 
 ### Species (for shotgun sequences)
-Metagenomic shotgun sequences can be annotated into species by [MetaPhlAn2](http://huttenhower.sph.harvard.edu/metaphlan2) (recommended). With a input sequence file “sample1.fa”, to get the species using [MetaPhlAn2](http://huttenhower.sph.harvard.edu/metaphlan2) by:
+Metagenomic shotgun sequences can be annotated into species by [MetaPhlAn2](http://huttenhower.sph.harvard.edu/metaphlan2) (recommended). With a input sequence file "sample1.fa", to get the species using [MetaPhlAn2](http://huttenhower.sph.harvard.edu/metaphlan2) by:
 ```
 metaphlan2.py sample_1.fa --input_type fasta --tax_lev s --ignore_viruses --ignore_eukaryotes --ignore_archaea > profiled_sample_1.sp.txt
 ```
@@ -155,7 +155,7 @@ sh Readme
 
 ## Build a MSE database
 
-The command "MetaDB-make-otu" builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [single sample list](#single-sample-file-and-sample-list) (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table](#otu-table) (OTU table format, by -T). It outputs a database file (*.mdb).
+The command "MetaDB-make-otu" builds a new MSE database for Meta-Storms 2 based search from the given samples. Samples are listed in either *(i)* [single sample list](#single-sample-file-and-sample-list) (for Parallel- META 3 format, by -i or -l with optional –p,), or *(ii)* [OTU table](#otu-table) (OTU table format, by -T). It outputs a database file (\*.mdb).
 
 **Usage:**
 ```
