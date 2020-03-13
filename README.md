@@ -24,7 +24,7 @@
 
 ## Introduction
 
-Meta-Storms 2 is the standalone implementation of the Microbiome Search Engine (MSE; http://mse.ac.cn). MSE is a search engine designed to efficiently search a database of microbiome samples and identify similar samples based on phylogenetic or functional relatedness. Meta-Storms 2 consists of the following steps: (i) creating a database composed of reference microbiome samples, and (ii) searching for similar samples in the database with given query microbiome sample(s) via phylogenetic similarities. Meta-Storms 2 relies on an advanced indexing algorithm, providing a fast, and constant, search speed in very large databases. Now Meta-Storms 2 supports OTU-based (for 16S rRNA), Species-based (for WGS) and KEGG-Ontology-based (for function) search. 
+Meta-Storms 2 is the standalone implementation of the Microbiome Search Engine (MSE; http://mse.ac.cn). MSE is a search engine designed to efficiently search a database of microbiome samples and identify similar samples based on phylogenetic or functional relatedness. Meta-Storms 2 consists of the following steps: (i) creating a database composed of reference microbiome samples, and (ii) searching for similar samples in the database with given query microbiome sample(s) via phylogenetic similarities. Meta-Storms 2 relies on an advanced indexing algorithm, providing a fast, and constant, search speed in very large databases. Now Meta-Storms 2 supports OTU-based (for 16S rRNA), Species-based (for WGS) and KEGG-Ontology-based (for function) search, which is compatible with profiling tools of Parallel-META 3, QIIME/QIIME2 and MetaPhlAn2. 
 
 
 ## System Requirement and dependency
@@ -93,32 +93,27 @@ cd meta-storms
 make
 ```
 
-## Notice before use
-
-1. For source code package based installation, please make sure proper versions of compilers have been installed: gcc 4.4 or higher for Linux / gcc-8 or higher for Mac OS X (refer to Software Requirements).
-
-2. Meta-Storms 2 optionally accepts microbiome sample(s) that are pre-processed by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) (version 3.2 or hihger) or [QIIME](http://qiime.org/) (version 1.9.1). Meta-Storms 2 software can also accept OTU tables (refer to [File format](#file-format)). However, if starting from DNA sequences, [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) and [QIIME](http://qiime.org/) are the recommended software for converting amplicon sequences to OTU tables (refer to [Pre-computing](#pre-computing)).
-
-3. Make sure that Meta-Storms 2 has the write permission in the output path.
-
-4. We strongly recommend reading this manual carefully before using Meta-Storms 2.
-
 ## Pre-computing
+
+Meta-Storms 2 accepts microbiome samples profiled into OTUs (for 16S) or species (for shotgun) or KEGG Orthologies (KO, for both 16S and shotgun).
 
 To use Meta-Storms 2, all sequences of microbiome samples must be pre-computed and profiled against the Greengenes database (version 13-8) by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) (version 3.2 or higher) or [QIIME](http://qiime.org/) (version 1.9.1). Then the profiling results will be used as input to Meta-Storms 2.
 
-### Pre-computing by Parallel-META 3
+### OTU (for 16S sequences)
 
-For a give sequence file (FASTA or FASTQ format, eg. sample1.fa), to convert the sequences to OTUs by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta):
+16S rRNA amplicon sequences can be picked into OTUs against GreenGenes 13-8 (97% level) reference by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) (recommended) or [QIIME](http://qiime.org/). For a give sequence file (FASTA or FASTQ format, eg. sample1.fa), OTUs can be profiled from 16S sequences in the three alternative methods:
+
+a. by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) (recommended):
+
 ```
 PM-parallel-meta -f F -r sample1.fa -o sample1.out
 ```
 
 Then the output file "sample1.out/classification.txt" is qualified as the input for Meta-Storms 2 (refer to [Single sample](#single-sample-file-and-sample-list)). For multiple samples as input, samples should be listed in the sample list (refer to [Sample list](#single-sample-file-and-sample-list)).
 
-### Pre-computing by QIIME
+b. by QIIME
 
-For a give sequence file (FASTA format, eg. sample1.fa), to convert the sequences to OTUs by [QIIME](http://qiime.org/):
+
 ```
 pick_otus.py -m uclust_ref --suppress_new_clusters -i sample1.fa -o sample1.out
 MetaDB-parse-qiime-otu -i sample1.out/sample1_otus.txt -o sample1.out/classification.txt
@@ -126,6 +121,28 @@ MetaDB-parse-qiime-otu -i sample1.out/sample1_otus.txt -o sample1.out/classifica
 
 Then the output file "sample1.out/classification.txt" is qualified as the input for Meta-Storms 2 (refer to [Single sample](#single-sample-file-and-sample-list)). For multiple samples as input, samples should be listed in the sample list (refer to [Sample list](#single-sample-file-and-sample-list)).
 
+c. by QIIME2: integrate Meta-Storms2 as [QIIME2-plug-in](https://github.com/qibebt-bioinfo/q2-metastorms.git).
+
+### Species (for shotgun sequences)
+Metagenomic shotgun sequences can be annotated into species by MetaPhlAn2 (recommended). With a input sequence file “sample1.fa”, to get the species using MetaPhlAn2 by:
+```
+metaphlan2.py sample_1.fa --input_type fasta --tax_lev s --ignore_viruses --ignore_eukaryotes --ignore_archaea > profiled_sample_1.sp.txt
+```
+Then the output file "profiled_sample_1.sp.txt" is qualified as the input for Meta-Storms 2 (refer to [Single sample](#single-sample-file-and-sample-list)). For multiple samples as input, samples should be listed in the sample list (refer to [Sample list](#single-sample-file-and-sample-list)).
+
+### Functions (KEGG Orthology, for both 16S and shotgun)
+Both 16S and shotgun sequences can be annotated into KEGG Orthologies (KO) by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) (recommended for 16S) or [Humann2](http://www.huttenhower.org/humann) (recommended for shotgun). With a input sequence file "sample1.fa":
+
+a. 16S sequences by Parallel-META 3
+```
+PM-parallel-meta -r sample1.fa -o sample1.out
+```
+in the output directory "sample1.out", the result file "functions.txt" is qualified as the input for Meta-Storms 2 (refer to [Single sample](#single-sample-file-and-sample-list)). For multiple samples as input, samples should be listed in the sample list (refer to [Sample list](#single-sample-file-and-sample-list)).
+
+b. Shotgun sequences by Humann2
+```
+humann2 --input sample.fa --output sample1.out
+```
 ## Example dataset
 
 Here we provide a demo dataset with 20 human oral microbiome samples in two different healthy statuses from *Huang, et al., 2014*. The pre-computing result (in the [OTU table](#otu-table) format and derived from Parallel-META 3 and the meta-data are in the "[example](#example-dataset)" folder in the installation package. We use this dataset to demonstrate all the following example commands.
@@ -349,13 +366,14 @@ MetaDB-parse-mns -i query.out -o query.out.mns
 
 In the output above, the first query sample (q_id_0) reports a MNS of 0.06.
 
-## File format
+## Input and output file format
 
-Meta-Storms 2 accepts the alternative two formats as input.
+Meta-Storms 2 accepts the two alternative formats as input.
 
 ### Single sample file and sample list
 
-A single sample is the OTUs and taxonomy information of a single microbiome sample profiled by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta)or [QIIME](http://qiime.org/)from the amplicon sequences (refer to [Pre-computing](#pre-computing) for details). It is a plain-text file, normally named as "*classification.txt*". An example of the single sample is below:
+A single sample is the OTU/species/KO information of a single microbiome sample profiled by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta), [QIIME](http://qiime.org/) or [MetaPhlAn2](http://huttenhower.sph.harvard.edu/metaphlan2) from the 16S/shotgun sequences (refer to [Pre-computing](#pre-computing) for details). It is a plain-text file. An example of the single sample is below:
+
 
 | **#Database_OTU** | **Count** |
 | ----------------- | --------- |
@@ -363,7 +381,7 @@ A single sample is the OTUs and taxonomy information of a single microbiome samp
 | OTU_2             | 17        |
 | OTU_3             | 38        |
 
-A sample list is a plain-text file for listing multiple samples (by –l) as Meta-Storms 2 input, which consists of two columns: the sample IDs and the directories of samples "classification.txt" files, e.g. 
+A sample list is a plain-text file for listing multiple samples (by –l) as Meta-Storms 2 input, which consists of two columns: the sample IDs and the directories of samples’ single input files, e.g. 
 
 | Sample_1 | /home/data/single_sample/Sample_2/classification.txt |
 | -------- | ---------------------------------------------------- |
@@ -371,9 +389,9 @@ A sample list is a plain-text file for listing multiple samples (by –l) as Met
 
 The directory can be either absolute directory or relative directory. Meta-Storms 2 also provides an optional parameter –p to add a prefix for the all the directories in the sample list in case of a relative directory is preferred.
 
-### OTU table
+### OTU/species/KO table
 
-An OTU table is a plain-text file that contains the OTUs and their sequence numbers for each of multiple samples. An example of the OTU table is bellow
+An OTU/species/KO table is a plain-text file that contains the features (OTU/species/KO) and their richness for each of multiple samples. An example of the OTU table is bellow:
 
 | **#Sample_ID** | **OTU_1** | **OTU_2** | **OTU_3** | **OTU_4** | **OTU_5** |
 | -----------| --------- | --------- | --------- | --------- | --------- |
@@ -383,29 +401,6 @@ An OTU table is a plain-text file that contains the OTUs and their sequence numb
 | Sample_4   | 58        | 30        | 23        | 3         | 0         |
 | Sample_5   | 95        | 5         | 5         | 4         | 0         |
 
-### KO table
-
-An KO table is a plain-text file that contains the KOs and their sequence numbers for each of multiple samples. An example of the KO table is bellow
-
-| **#Sample_ID** | **KO_1** | **KO_2** | **KO_3** | **KO_4** | **KO_5** |
-| -------------- | --------- | --------- | --------- | --------- | --------- |
-| Sample_1   | 10        | 17        | 38        | 2         | 2         |
-| Sample_2   | 0         | 5         | 57        | 0         | 0         |
-| Sample_3   | 2         | 35        | 7         | 0         | 0         |
-| Sample_4   | 58        | 30        | 23        | 3         | 0         |
-| Sample_5   | 95        | 5         | 5         | 4         | 0         |
-
-### Species table
-
-An species table is a plain-text file that contains the Species and their sequence numbers for each of multiple samples. An example of the species table is bellow
-
-| **#Sample_ID** | **sp_1** | **sp_2** | **sp_3** | **sp_4** | **sp_5** |
-| -------------- | --------- | --------- | --------- | --------- | --------- |
-| Sample_1   | 10        | 17        | 38        | 2         | 2         |
-| Sample_2   | 0         | 5         | 57        | 0         | 0         |
-| Sample_3   | 2         | 35        | 7         | 0         | 0         |
-| Sample_4   | 58        | 30        | 23        | 3         | 0         |
-| Sample_5   | 95        | 5         | 5         | 4         | 0         |
 
 The output file format can be found at [Search output](#search-output).
 
