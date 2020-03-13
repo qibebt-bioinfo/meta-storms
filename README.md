@@ -186,9 +186,9 @@ You can also build a MSE database by species (MetaDB-make-sp) or function (MetaD
 
 ### HDD mode
 
-The HDD (Hard Drive Disk) mode uses the re-encoding technique to minimize the RAM usage for database search (although the mode is slower). When the HDD mode is enabled via "–H t", **MetaDB-make-otu/func/sp** will generate accessory data named as \*.mdb.hdd under the same directory of the output database (\*.mdb). For extremely large databases (e.g., sample number > 10,000), we strongly recommend users to enable the HDD mode to minimize the RAM consumption.
+The HDD (Hard Drive Disk) mode uses the re-encoding technique to minimize the RAM usage for database search (although the mode is slower). When the HDD mode is enabled via "–H t", [MetaDB-make-otu/func/sp](#build-a-mse-database) will generate accessory data named as \*.mdb.hdd under the same directory of the output database (\*.mdb). For extremely large databases (e.g., sample number > 10,000), we strongly recommend users to enable the HDD mode to minimize the RAM consumption.
 
-For an existing database (*.mdb), HDD mode can also be enabled by making its HDD files via the command below. Then the *.mdb.hdd would be generated and stored under the same directory as the database.
+For an existing database (\*.mdb), HDD mode can also be enabled by making its HDD files via the command below. Then the \*.mdb.hdd would be generated and stored under the same directory as the database.
 
 Example (make sure you are in "[example](#example-dataset)" path):
 ```
@@ -197,7 +197,7 @@ MetaDB-make-otu -d database.mdb
 
 ### Merge MSE databases
 
-The command "MetaDB-merge" merges two existing databases (*.mdb) into one.
+The command "MetaDB-merge" merges two existing databases (\*.mdb) into one.
 **Usage:**
 
 ```
@@ -220,9 +220,9 @@ MetaDB-merge -1 database.mdb -2 database_2.mbd -o database_merged
 
 ## Search the MSE database
 
-### Search via Meta-Storms 2 by OTU
+### Search via Meta-Storms 2
 
-Query sample(s) should also be pre-computed by [Parallel-META 3](https://github.com/qibebt-bioinfo/parallel-meta) or [QIIME](http://qiime.org/) using the Greengenes database as reference (refer to [Pre-computing](#pre-computing)). The database is built by **MetaDB-make-otu** (*.mdb). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
+The database is built by [MetaDB-make-otu/sp/func](#build-a-mse-database) (\*.mdb/\*.mdbs/\*.mdbf). Meta-Storms 2 supports the index-based query, which features an extremely fast and constant search speed against very large microbiome databases.
 
 The query sample(s) can be provided via either (*i*) [single sample](#single-sample-file-and-sample-list) (for a single sample in Parallel-META 3 format, by -i), or (*ii*) [single sample list](#single-sample-file-and-sample-list) (for multiple samples in Parallel- META 3 format, by -l with optional -p), or (*iii*) [OTU table](#otu-table) (for OTU table format, by -T).
 
@@ -265,7 +265,7 @@ MetaDB-search-otu -d database.mdb -T taxa.OTU.Count -o query.out
 Meta-Storms 2 also supports search by species or function with the commands "MetaDB-search-sp" and "MetaDB-search-func". 
 ### Search output
 
-[MetaDB-search-otu](#search-the-mse-database) generates a number of matches, each with its sample ID and its similarity score (always between 0 and 1) to the query. In the output, for each of the query samples, all of its matches are listed in tandem in a single line, e.g.
+The search result contains a number of matches, each with its sample ID and its similarity score (always between 0 and 1) to the query. In the output, for each of the query samples, all of its matches are listed in tandem in a single line, e.g.
 
 | **#**      | **Query** | **Match** | **Similarity** | **Match** | **Similarity** |
 | ---------- | --------- | --------- | -------------- | --------- | -------------- |
