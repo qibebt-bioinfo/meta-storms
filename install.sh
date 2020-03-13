@@ -16,7 +16,7 @@ Check_old_pm=`grep "export MetaStorms"  $PATH_File|awk -F '=' '{print $1}'`
 Check_old_path=`grep "MetaStorms/bin"  $PATH_File |sed 's/\(.\).*/\1/' |awk '{if($1!="#"){print "Ture";}}'`
 Add_Part="####DisabledbyMeta-Storms2####"
 echo "**Meta-Storms 2 Installation**"
-echo "**Version std 2.2.1**"
+echo "**Version 2.3 beta**"
 ###Build source code for src package###
 if [ -f "Makefile" ]
    then
