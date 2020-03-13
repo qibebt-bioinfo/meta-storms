@@ -16,7 +16,7 @@
 - [Search the MSE database](#search-the-mse-database)
 - [Multiple classification based on search result](#multiple-classification-based-on-search-result)
 - [Microbiome Novelty Score (MNS) based on search results](#microbiome-novelty-score-mns-based-on-search-results)
-- [Input and output file format](#input-and-output-file-format)
+- [Input and output format](#input-and-output-format)
 - [Supplementary](#supplementary)
 - [Citation](#citation)
 - [Contact](#contact)
@@ -363,7 +363,7 @@ MetaDB-parse-mns -i query.out -o query.out.mns
 
 In the output above, the first query sample (q_id_0) reports a MNS of 0.06.
 
-## Input and output file format
+## Input and output format
 
 Meta-Storms 2 accepts the two alternative formats as input.
 
