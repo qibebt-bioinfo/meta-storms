@@ -71,7 +71,7 @@ int Gen_Index(const char * infilename, const char * outfilename, int mode){
             }
     
     
-    outfile << "#ID\tMeta-data\tLikelihod_score" << endl;
+    outfile << "#ID\tMeta-data\tScore" << endl;
     
     string buffer;
     unsigned int sample_count = 0;
